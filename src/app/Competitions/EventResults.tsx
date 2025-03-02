@@ -1,4 +1,3 @@
-// Server component
 import Group from "./Group";
 import CompetitionStyles from "./Competitions.module.css";
 import { Result } from "../Types/solve";

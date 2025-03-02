@@ -1,4 +1,3 @@
-// Server component
 import Competitions from "./Competitions";
 import { Metadata } from "next";
 import { getResults } from "../utils/competitions";

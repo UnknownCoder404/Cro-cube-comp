@@ -1,4 +1,3 @@
-// Server component
 import { AllowedEvents, CompetitionResultType } from "../Types/solve";
 import CompetitionEvent from "./CompetitionEvent";
 import competitionStyles from "./Competitions.module.css";

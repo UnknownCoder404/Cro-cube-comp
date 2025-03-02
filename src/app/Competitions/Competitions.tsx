@@ -1,4 +1,3 @@
-// Server component
 import { CompetitionResultsType } from "../Types/solve";
 import Competition from "./Competition";
 
@@ -9,22 +8,26 @@ type Props = {
         status: number;
     };
 };
+
 export default async function Competitions(props: Props) {
     const competitions = props.competitions.parsed;
 
-    const competitionNames = Object.keys(props.competitions.parsed);
+    // Convert competitions object to array and sort by date
+    const sortedCompetitions = Object.entries(competitions).sort((a, b) => {
+        const dateA = new Date(a[1].date);
+        const dateB = new Date(b[1].date);
+        return dateB.getTime() - dateA.getTime(); // Newest first
+    });
+
     return (
         <main>
-            {competitionNames.map((compName, index) => {
-                const competition = competitions[compName];
-                return (
-                    <Competition
-                        competitionName={compName}
-                        competition={competition}
-                        key={index}
-                    />
-                );
-            })}
+            {sortedCompetitions.map(([compName, competition], index) => (
+                <Competition
+                    competitionName={compName}
+                    competition={competition}
+                    key={index}
+                />
+            ))}
         </main>
     );
 }
