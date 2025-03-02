@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import { getPosts } from "../utils/posts";
 import PostsPage from "./PostsPage";
 import ProtectedRoute from "../components/Common/ProtectedRoute";
@@ -15,6 +15,12 @@ export const revalidate = 0;
 export default async function Posts() {
     const fetchedPosts = await getPosts();
     const posts = fetchedPosts.success ? fetchedPosts.parsed : [];
+
+    // Sort posts from newest to oldest
+    posts.sort(
+        (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
 
     return (
         <ProtectedRoute require="admin" redirectTo="/Login" validateToken>

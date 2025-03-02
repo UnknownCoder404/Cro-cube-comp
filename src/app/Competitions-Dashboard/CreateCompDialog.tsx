@@ -171,12 +171,12 @@ function CreateCompDialog({
         const selectedEventList = Object.entries(selectedEvents)
             .filter(([, { selected }]) => selected)
             .map(([name, { rounds }]) => ({ name, rounds }));
-
+        const utcDate = new Date(date).toISOString();
         try {
             setIsLoading(true);
             const { success } = await createCompetition(
                 name,
-                date,
+                utcDate,
                 selectedEventList,
             );
             if (!success) throw new Error("Failed to create competition");
@@ -219,7 +219,9 @@ export function CreateCompButton() {
 
     return (
         <>
-            <button onClick={toggleModal}>Napravi natjecanje</button>
+            <button className={styles["create-comp-btn"]} onClick={toggleModal}>
+                Izradi natjecanje
+            </button>
             {showModal && (
                 <CreateCompDialog
                     showModal={showModal}

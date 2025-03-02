@@ -171,6 +171,7 @@
 }
 
 .edit-title-input {
+    outline: 1px solid gray;
     transition:
         font-size 0.3s,
         font-weight 0.3s;

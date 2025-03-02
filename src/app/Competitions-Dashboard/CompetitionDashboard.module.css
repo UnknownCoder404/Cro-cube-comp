@@ -104,6 +104,22 @@
     transform: translateY(2px) scale(0.9);
 }
 
+.create-comp-btn {
+    background-color: rgb(0 98 255);
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 4px 8px;
+    margin: 0.5rem;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition:
+        transform 0.3s var(--exponential),
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
 /* Edit Competition Modal */
 .edit-comp-modal[open] {
     width: 90vw;

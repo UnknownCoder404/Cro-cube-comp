@@ -46,7 +46,12 @@ export async function getResults(): Promise<
     const resultsUrl = new URL(url);
     resultsUrl.pathname = "competitions/results";
     try {
-        const data = await withTimeout(fetch(resultsUrl), TIMEOUT_DURATION);
+        const data = await withTimeout(
+            fetch(resultsUrl, {
+                cache: "no-store",
+            }),
+            TIMEOUT_DURATION,
+        );
         const parsedJSON = await data.json();
         return {
             parsed: parsedJSON,

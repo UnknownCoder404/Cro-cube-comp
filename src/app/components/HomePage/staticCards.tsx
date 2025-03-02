@@ -8,7 +8,7 @@ import styles from "./Cards.module.css";
 
 export const staticCards: () => CardProp[] = () => [
     {
-        title: "Natjecanja",
+        title: "Rezultati",
         description: (
             <p>
                 Pogledajte{" "}

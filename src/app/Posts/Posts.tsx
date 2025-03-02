@@ -61,19 +61,19 @@ function EditPostModal({
             <form onSubmit={handleEdit} className={styles["edit-post-form"]}>
                 <input
                     type="text"
-                    placeholder="Title"
+                    placeholder="Uredi naslov..."
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     className={styles["edit-title-input"]}
                 />
                 <textarea
-                    placeholder="Description..."
+                    placeholder="Uredi opis..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     className={styles["edit-description-textarea"]}
                 />
                 <button type="submit" className={styles["edit-submit-btn"]}>
-                    {isLoading ? <Loader /> : "Edit Post"}
+                    {isLoading ? <Loader /> : "Uredi objavu"}
                 </button>
             </form>
         </dialog>
