@@ -171,12 +171,12 @@ function CreateCompDialog({
         const selectedEventList = Object.entries(selectedEvents)
             .filter(([, { selected }]) => selected)
             .map(([name, { rounds }]) => ({ name, rounds }));
-
+        const utcDate = new Date(date).toISOString();
         try {
             setIsLoading(true);
             const { success } = await createCompetition(
                 name,
-                date,
+                utcDate,
                 selectedEventList,
             );
             if (!success) throw new Error("Failed to create competition");

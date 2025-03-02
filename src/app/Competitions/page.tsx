@@ -9,6 +9,9 @@ export const metadata: Metadata = {
     keywords: ["Cro Cube Comp", "Rezultati"],
 };
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function CompetitionsPage() {
     const competitions = await getResults();
 

@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import { getPosts } from "../utils/posts";
 import PostsPage from "./PostsPage";
 import ProtectedRoute from "../components/Common/ProtectedRoute";
