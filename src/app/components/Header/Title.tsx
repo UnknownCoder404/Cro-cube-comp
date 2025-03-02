@@ -10,7 +10,7 @@ const routeTitles: {
     "/": "Cro Cube Comp",
     "/Login": "Prijava",
     "/Register": "Registracija",
-    "/Competitions": "Natjecanja",
+    "/Competitions": "Rezultati",
     "/Competitions-Dashboard": "Natjecanja",
     "/Scramble": "Vježbanje",
     "/Dashboard": "Radna ploča",
