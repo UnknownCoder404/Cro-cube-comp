@@ -1,4 +1,3 @@
-// Server component
 import { Metadata } from "next";
 import RegisterPage from "./RegisterPage";
 import ProtectedRoute from "../components/Common/ProtectedRoute";

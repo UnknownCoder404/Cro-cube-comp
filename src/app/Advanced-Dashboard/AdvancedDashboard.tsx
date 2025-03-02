@@ -1,4 +1,3 @@
-// Server component
 import { CompetitionType, Users } from "../Types/solve";
 import styles from "./AdvancedDashboard.module.css";
 import Backup from "./Backup";
