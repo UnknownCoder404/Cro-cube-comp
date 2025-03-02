@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import Cards from "./components/HomePage/cards";
+import Cards from "./components/HomePage/Cards";
 import { getPosts } from "./utils/posts";
 
 export const metadata: Metadata = {

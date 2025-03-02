@@ -6,4 +6,5 @@ export type CardProp = {
     };
     shouldRender?: (loggedIn?: boolean) => boolean;
     loggedIn?: boolean;
+    isPost?: boolean;
 };
