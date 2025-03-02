@@ -1,6 +1,6 @@
 {
-    "name": "cubing-competition",
-    "version": "1.0.4",
+    "name": "cro-cube-comp",
+    "version": "1.0.5",
     "private": true,
     "scripts": {
         "dev": "next dev --turbo --port 2500",
