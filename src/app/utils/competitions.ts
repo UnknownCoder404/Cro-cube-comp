@@ -53,7 +53,6 @@ export async function getResults(): Promise<
             TIMEOUT_DURATION,
         );
         const parsedJSON = await data.json();
-        console.log(parsedJSON);
         return {
             parsed: parsedJSON,
             success: true,
