@@ -32,8 +32,6 @@ Create a `.env` file in the root directory of the project and add the following 
 
 - `SHOW_TOOLBAR` - Determines if the toolbar is forced to be shown to all users (even non-admins). Set to `true` to enable.
 
-- `BASE_URL` - The base URL of the application. This is used to generate sitemap.
-
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
