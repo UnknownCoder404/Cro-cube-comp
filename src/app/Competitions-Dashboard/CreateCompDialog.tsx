@@ -219,7 +219,9 @@ export function CreateCompButton() {
 
     return (
         <>
-            <button onClick={toggleModal}>Napravi natjecanje</button>
+            <button className={styles["create-comp-btn"]} onClick={toggleModal}>
+                Izradi natjecanje
+            </button>
             {showModal && (
                 <CreateCompDialog
                     showModal={showModal}
