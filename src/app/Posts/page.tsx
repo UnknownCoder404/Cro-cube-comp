@@ -16,6 +16,12 @@ export default async function Posts() {
     const fetchedPosts = await getPosts();
     const posts = fetchedPosts.success ? fetchedPosts.parsed : [];
 
+    // Sort posts from newest to oldest
+    posts.sort(
+        (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+
     return (
         <ProtectedRoute require="admin" redirectTo="/Login" validateToken>
             <PostsPage posts={posts} />

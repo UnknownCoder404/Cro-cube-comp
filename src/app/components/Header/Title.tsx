@@ -16,6 +16,7 @@ const routeTitles: {
     "/Dashboard": "Radna ploča",
     "/Advanced-Dashboard": "Radna ploča",
     "/Rules": "Pravila",
+    "/Posts": "Objave",
 };
 
 function ClientTitle() {
