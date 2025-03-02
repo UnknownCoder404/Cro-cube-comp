@@ -1,10 +1,11 @@
-import { createPost, isErrorWithMessage } from "@/app/utils/posts";
+import { createPost } from "@/app/utils/posts";
 import styles from "../../Posts/Posts.module.css";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Loader } from "../Loader/Loader";
 import { markdownToHtml } from "@/app/utils/markdown";
 import { clsx } from "clsx";
+import { isErrorWithMessage } from "@/app/utils/helpers/isErrorWIthMessage";
 
 type Props = {
     title: string;

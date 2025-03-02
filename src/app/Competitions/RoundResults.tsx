@@ -1,7 +1,7 @@
 // Client component
 import CompetitionStyles from "./Competitions.module.css";
 import { Result } from "../Types/solve";
-import { formatTime } from "../utils/solveTime";
+import { formatTime, getAverage } from "../utils/solveTime";
 import { motion } from "framer-motion";
 import { clsx } from "clsx";
 
@@ -15,6 +15,7 @@ export default function RoundResults({
     const className = clsx(CompetitionStyles["round-results"], {
         [CompetitionStyles["hidden"]]: !show,
     });
+
     return (
         <motion.div
             initial={{ opacity: 0, height: 0 }}
@@ -39,7 +40,7 @@ export default function RoundResults({
                                 {result.solves
                                     .map((solve) => formatTime(solve))
                                     .join(" ")}{" "}
-                                (Ao5 {formatTime(+result.average)})
+                                (Ao5 {getAverage(result.solves)})
                             </p>
                         </div>
                     );

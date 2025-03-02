@@ -1,12 +1,18 @@
 import { User, Users } from "../Types/solve";
-import Select from "react-select";
+import Select, { Props as SelectProps } from "react-select"; // Import Props
 
 type UserSelectProps = {
     users: Users;
     setSelectedUser: (arg0: User) => void;
     disabled: boolean;
-};
-function UserSelect({ users, setSelectedUser, disabled }: UserSelectProps) {
+} & Omit<SelectProps, "options" | "onChange" | "isDisabled" | "defaultValue">; //  Extend SelectProps and Remove Duplicates
+
+function UserSelect({
+    users,
+    setSelectedUser,
+    disabled,
+    ...rest
+}: UserSelectProps) {
     const usersAsOptions = users.map((user) => ({
         value: user._id,
         label: user.username,
@@ -20,25 +26,12 @@ function UserSelect({ users, setSelectedUser, disabled }: UserSelectProps) {
             isLoading={disabled}
             isDisabled={disabled}
             isSearchable={true}
-            className="select-one"
             onChange={(e) =>
+                // @ts-expect-error We will fix this later, react-select is not typed correctly
                 setSelectedUser(users.find((user) => user._id === e!.value)!)
             }
+            {...rest} // Spread the rest of the props here
         />
-        // <select
-        //   onChange={(e) =>
-        //     setSelectedUser(users.find((u) => u._id === e.target.value)!)
-        //   }
-        //   disabled={disabled}
-        // >
-        //   {users.map((user) => {
-        //     return (
-        //       <option key={user._id} value={user._id}>
-        //         {user.username}
-        //       </option>
-        //     );
-        //   })}
-        // </select>
     );
 }
 

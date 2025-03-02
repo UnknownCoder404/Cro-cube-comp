@@ -1,16 +1,8 @@
 import { Loader } from "./components/Loader/Loader";
-
+import styles from "./Loading.module.css";
 export default function LoadingPage() {
     return (
-        <div
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                minHeight: "100vh",
-                overflow: "hidden",
-            }}
-        >
+        <div className={styles["loading-container"]}>
             <Loader />
         </div>
     );

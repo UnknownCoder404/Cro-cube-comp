@@ -1,4 +1,3 @@
-/* Main container styling */
 .main {
     margin: 0 auto;
     padding: 30px;
@@ -30,14 +29,6 @@
     flex-wrap: wrap;
 }
 
-/* @media (max-width: 650px) {
-  .scramble-controls {
-    flex-direction: column;
-    justify-content: center;
-  }
-} */
-
-/* Scramble display container */
 .scramble-display-container {
     display: flex;
     justify-content: center;
@@ -61,10 +52,9 @@
     height: 100px;
 }
 
-/* Button styling */
 .btn-rescramble {
-    background-color: #428bca;
-    border: 1px solid #357ebd;
+    background-color: var(--default-button-background-color);
+    border: none;
     border-radius: 5px;
     color: #fff;
     cursor: pointer;

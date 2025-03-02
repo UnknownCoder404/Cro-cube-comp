@@ -32,12 +32,15 @@ export default function ProtectedRoute({
             try {
                 const role = getRole();
 
+                // If token needs validation, check if it's valid
                 if (validateToken) {
                     const tokenIsValid = await tokenValid();
+                    // If token is invalid and user does not need to be logged out, redirect
                     if (!tokenIsValid && require !== "loggedout") {
                         handleRedirect();
                         return;
                     }
+                    // If user has to be logged out, and user is logged in, log them out
                     if (
                         require === "loggedout" &&
                         !tokenIsValid &&
@@ -45,13 +48,15 @@ export default function ProtectedRoute({
                     ) {
                         // User has invalid token, but is logged in locally
                         logOut();
+                        return;
                     }
                 }
 
+                // Check for other cases
                 if (
-                    (require === "loggedin" && !role) ||
+                    (require === "loggedin" && !isLoggedIn) ||
                     (require === "admin" && (!role || !isAdmin(role))) ||
-                    (require === "loggedout" && role && require !== "loggedout")
+                    (require === "loggedout" && role)
                 ) {
                     handleRedirect();
                     return;

@@ -3,7 +3,7 @@ import { CompetitionType } from "../Types/solve";
 import { getCompetitions } from "../utils/competitions";
 import CompButtons from "./CompButtons";
 import styles from "./CompetitionDashboard.module.css";
-import { CreateCompButton } from "./CreateCompetition";
+import { CreateCompButton } from "./CreateCompDialog";
 import ProtectedRoute from "../components/Common/ProtectedRoute";
 import CalendarSvg from "../components/Svg/calendar";
 import LockSvg from "../components/Svg/lock";
@@ -29,7 +29,7 @@ function CurrentCompetitions({
             {competitions.map((comp) => {
                 const { name, isLocked, date, _id, events } = comp;
                 const dateFormatted = new Date(date).toLocaleDateString(
-                    ["hr-HR", "fr-FR"],
+                    ["hr-HR"],
                     {
                         day: "2-digit",
                         month: "2-digit",

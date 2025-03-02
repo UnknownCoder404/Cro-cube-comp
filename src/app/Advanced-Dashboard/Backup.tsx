@@ -22,18 +22,16 @@ export default function Backup() {
         isLoading,
         refetch,
         error,
-    } = useQuery(
-        ["backup"],
-        async () => {
-            const backupUrl = new URL(url);
-            backupUrl.pathname = "backup";
-            return await getFile(backupUrl.toString());
-        },
-        { enabled: false },
-    );
+    } = useQuery(["backup"], async () => {
+        const backupUrl = new URL(url);
+        backupUrl.pathname = "backup";
+        return await getFile(backupUrl.toString());
+    });
 
     useEffect(() => {
-        refetch();
+        refetch().catch((e) => {
+            console.error("Failed to refetch data: ", e);
+        });
     }, [refetch]);
 
     return (
@@ -45,14 +43,18 @@ export default function Backup() {
                 <button
                     onClick={() => {
                         if (!backup) return;
-                        const url = window.URL.createObjectURL(backup);
+                        try {
+                            const url = window.URL.createObjectURL(backup);
 
-                        const a = document.createElement("a");
-                        a.href = url;
-                        a.download = `Sigurnosna kopija - ${new Date().toLocaleDateString()}.zip`;
+                            const a = document.createElement("a");
+                            a.href = url;
+                            a.download = `Sigurnosna kopija - ${new Date().toLocaleDateString()}.zip`;
 
-                        document.body.appendChild(a);
-                        a.click();
+                            document.body.appendChild(a);
+                            a.click();
+                        } catch (error) {
+                            console.error("Error downloading backup: ", error);
+                        }
                     }}
                     disabled={isLoading}
                     className={styles["backup-btn"]}

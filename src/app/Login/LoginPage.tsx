@@ -1,5 +1,5 @@
 "use client";
-import loginStyles from "./Login.module.css";
+import styles from "./Login.module.css";
 import { url } from "@/globals";
 import { Dispatch, SetStateAction, useState } from "react";
 import { isAdmin } from "../utils/credentials";
@@ -73,8 +73,8 @@ async function handleSubmit(
 function ErrorMessage({ message }: { message: string }) {
     if (!message) return null;
     return (
-        <div id="message">
-            <p>{message}</p>
+        <div className={styles["message-container"]}>
+            <p className={styles["message"]}>{message}</p>
         </div>
     );
 }
@@ -88,9 +88,9 @@ function LoginButton({
 }) {
     return (
         <button
-            className={clsx(loginStyles["submit-btn"], {
-                [loginStyles.loading]: loading,
-                [loginStyles.disabled]: disabled,
+            className={clsx(styles["submit-btn"], {
+                [styles.loading]: loading,
+                [styles.disabled]: disabled,
             })}
             type="submit"
             disabled={disabled}
@@ -135,7 +135,7 @@ function LoginForm() {
                 id="username"
                 name="username"
                 placeholder="Korisničko ime"
-                className={loginStyles["username-input"]}
+                className={styles["username-input"]}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 autoFocus
@@ -147,7 +147,7 @@ function LoginForm() {
                 id="password"
                 name="password"
                 placeholder="Lozinka"
-                className={loginStyles["password-input"]}
+                className={styles["password-input"]}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
@@ -160,7 +160,7 @@ function LoginForm() {
 
 export default function LoginPage() {
     return (
-        <main className={loginStyles["form-container"]}>
+        <main className={styles["form-container"]}>
             <LoginForm />
         </main>
     );

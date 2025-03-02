@@ -6,7 +6,7 @@ import { CompetitionType } from "../Types/solve";
 import styles from "./AdvancedDashboard.module.css";
 import { addToken } from "../utils/credentials";
 import { url } from "@/globals";
-import Select from "react-select";
+import Select, { Props as SelectProps } from "react-select";
 
 type ResultsBtnProps = {
     competition: CompetitionType | undefined;
@@ -18,7 +18,7 @@ type CompSelectProps = {
     competitions: CompetitionType[];
     setSelectedCompetition: (arg0: CompetitionType) => void;
     disabled: boolean;
-};
+} & Omit<SelectProps, "options" | "onChange" | "isDisabled" | "defaultValue">; // Extend SelectProps and omit conflicting props
 
 const getResultsForCompById = async (id: string): Promise<Blob> => {
     const resultsUrl = new URL(url);
@@ -79,6 +79,7 @@ function CompSelect({
     competitions,
     setSelectedCompetition,
     disabled,
+    ...rest // Receive other props
 }: CompSelectProps) {
     const competitionsAsOptions = competitions.map((competition) => ({
         value: competition._id,
@@ -88,15 +89,23 @@ function CompSelect({
         <Select
             isDisabled={disabled}
             isLoading={disabled}
-            className="select-one"
             options={competitionsAsOptions}
             defaultValue={competitionsAsOptions[0]}
             instanceId="prefix"
             onChange={(e) => {
-                setSelectedCompetition(
-                    competitions.find((c) => c._id === e!.value)!,
-                );
+                // Handle null/undefined e
+                // @ts-expect-error We will fix this later, react-select is not typed correctly
+                if (e && e.value) {
+                    const selectedComp = competitions.find(
+                        // @ts-expect-error We will fix this later, react-select is not typed correctly
+                        (c) => c._id === e.value,
+                    );
+                    if (selectedComp) {
+                        setSelectedCompetition(selectedComp);
+                    }
+                }
             }}
+            {...rest} // Pass down other props
         />
     );
 }
@@ -122,6 +131,7 @@ export default function Excel({
                         competitions={competitions}
                         setSelectedCompetition={setSelectedCompetition}
                         disabled={loading}
+                        className={styles["competition-select"]}
                     />
                     <ResultsBtn
                         setLoading={setLoading}

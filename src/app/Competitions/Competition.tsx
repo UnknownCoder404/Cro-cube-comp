@@ -6,7 +6,7 @@ import competitionStyles from "./Competitions.module.css";
 // Component for displaying the competition name
 function CompetitionName({ name }: { name: string }) {
     return (
-        <h2 className={competitionStyles["comp-name"]} itemProp="name">
+        <h2 className={competitionStyles["comp-name"]}>
             {name || "Ime natjecanja nije dostupno"}
         </h2>
     );
@@ -40,14 +40,10 @@ export default async function Competition(props: {
     ) as AllowedEvents[];
 
     return (
-        <div
-            className={competitionStyles["comp-info"]}
-            itemScope
-            itemType="http://schema.org/SportEvent"
-        >
+        <div className={competitionStyles["comp-info"]}>
             <CompetitionName name={competitionName} />
             <CompetitionDate date={competitionDateString} />
-            <div itemProp="event" itemScope itemType="http://schema.org/Event">
+            <div>
                 {competitionEvents.map((eventName, index) => {
                     const event = competition.events[eventName];
                     return (

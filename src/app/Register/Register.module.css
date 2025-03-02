@@ -11,12 +11,12 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    row-gap: 20px;
     align-items: center;
 }
 
 .username-input,
 .password-input {
-    margin-bottom: 40px;
     width: 50vw;
     padding: 10px 12px;
     border: 2px solid #ccc;
@@ -29,8 +29,8 @@
 
 .username-input:focus,
 .password-input:focus {
-    border-color: #66afe9;
-    box-shadow: 0 0 8px rgb(102 175 233 / 60%);
+    border-color: var(--default-button-background-color);
+    box-shadow: 0 0 8px var(--default-button-shadow-color);
     outline: none;
 }
 
@@ -59,23 +59,23 @@
     justify-content: center;
     align-items: center;
     padding: 10px 12px;
-    width: 50vw;
+    width: 100%;
     font-size: 18px;
     color: #fff;
-    background-color: #66afe9; /* Blue button */
+    background-color: var(--default-button-background-color);
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition:
         background-color 0.3s,
         box-shadow 0.3s,
-        transform 0.3s var(--exponential);
+        transform 0.3s ease;
 }
 
 .submit-btn:hover {
     transform: scale(1.05);
-    background-color: #559dd6;
-    box-shadow: 0 0 8px rgb(102 175 233 / 60%);
+    background-color: var(--default-button-hover-background-color);
+    box-shadow: 0 0 8px var(--default-button-shadow-color);
 }
 
 .submit-btn:focus {
@@ -83,13 +83,14 @@
 }
 
 .message-container {
-    width: 300px;
+    width: 100%;
+    max-width: 50vw;
 }
 
-#message {
-    margin-top: 10px;
+.message {
     text-align: center;
     text-wrap: wrap;
+    overflow-wrap: anywhere;
     color: rgb(255 255 255);
     font-weight: 700;
 }

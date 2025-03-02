@@ -10,6 +10,9 @@
     --anchor-visited-color: rgb(85 179 238);
     --anchor-unvisited-color: rgb(159 255 255);
     --header-background-color: rgb(24 24 24);
+    --default-button-background-color: rgb(65 105 225);
+    --default-button-hover-background-color: rgb(63 99 207);
+    --default-button-shadow-color: rgb(65 105 225 / 60%);
 }
 
 body {
@@ -24,9 +27,4 @@ a {
 
 a:visited {
     color: var(--anchor-visited-color);
-}
-
-.select-one {
-    color: #333;
-    max-width: 300px;
 }

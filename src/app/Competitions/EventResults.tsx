@@ -33,12 +33,7 @@ export default async function EventResults({ event }: EventProps) {
             itemScope
             itemType="http://schema.org/SportEvent"
         >
-            <div
-                className={CompetitionStyles["groups"]}
-                itemProp="subEvent"
-                itemScope
-                itemType="http://schema.org/SportEvent"
-            >
+            <div className={CompetitionStyles["groups"]}>
                 {groups.map((group, index) => (
                     <Group group={group} key={index} groupNumber={index + 1} />
                 ))}

@@ -13,7 +13,8 @@ export default function SmoothAnchor({
 }: SmoothAnchorProps) {
     const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
         if (href) {
-            const target = document.getElementById(href.slice(1));
+            // Target the selected element, then scroll to it
+            const target = document.querySelector(href);
             if (target) {
                 event.preventDefault();
                 target.scrollIntoView({ behavior: "smooth" });
@@ -22,14 +23,7 @@ export default function SmoothAnchor({
     };
 
     return (
-        <a
-            href={href}
-            onClick={handleClick}
-            {...props}
-            style={{
-                scrollBehavior: "smooth",
-            }}
-        >
+        <a href={href} onClick={handleClick} {...props}>
             {children}
         </a>
     );

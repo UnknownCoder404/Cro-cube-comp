@@ -48,7 +48,6 @@ export default function Group({ group, groupNumber }: Props) {
 
     return (
         <section
-            itemProp="event" // Associate with structured data
             className={clsx(CompetitionStyles["group"], {
                 [CompetitionStyles["no-gap"]]: !areGroupResultsShown,
             })} // Apply the no-gap class when group results are hidden

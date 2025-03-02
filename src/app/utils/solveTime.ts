@@ -16,9 +16,10 @@ export function getAverageNoFormat(solves: number[]) {
     const sortedSolves = solves.slice();
 
     sortedSolves.sort((a, b) => {
-        if (a === 0) return 1; // Place 0 at the last element
-        if (b === 0) return -1; // Place 0 at the last element
-        return a - b; // Regular sorting for other numbers
+        if (a === 0 && b === 0) return 0;
+        if (a === 0) return 1;
+        if (b === 0) return -1;
+        return a - b;
     });
     // Remove the smallest and largest elements
     const trimmedSolves = sortedSolves.slice(1, sortedSolves.length - 1);
@@ -27,7 +28,7 @@ export function getAverageNoFormat(solves: number[]) {
     const average =
         trimmedSolves.reduce((acc, val) => acc + val, 0) / trimmedSolves.length;
 
-    // Check if trimmedSolves contains DNF
+    // If the trimmed solves include a DNF (0), the entire average is considered a DNF.
     if (trimmedSolves.includes(0)) {
         return 0;
     }
@@ -36,13 +37,14 @@ export function getAverageNoFormat(solves: number[]) {
     return average.toFixed(2);
 }
 export function formatTime(seconds: number | string) {
-    // Convert seconds to milliseconds without rounding
-    const ms = +seconds * 1000;
-
+    // Convert seconds to milliseconds and round to the nearest integer
+    const ms = Math.round(+seconds * 1000);
+    if (ms === 0) return "DNF";
     // Calculate minutes, remaining seconds, and milliseconds
     const minutes = Math.floor(ms / 60000); // Get minutes
     const remainingSeconds = Math.floor((ms % 60000) / 1000); // Get remaining seconds
     const milliseconds = ms % 1000; // Get milliseconds
+
     // Initialize an array to hold the time parts
     const timeParts = [];
 
@@ -55,9 +57,9 @@ export function formatTime(seconds: number | string) {
     timeParts.push(`${remainingSeconds.toString().padStart(2, "0")}`);
     timeParts.push(`.${milliseconds.toString().padStart(3, "0").slice(0, 2)}`);
     const formattedTime = timeParts.join("");
-    // Return the formatted time string
     return formattedTime;
 }
+
 function onlyNumbersSpacesAndDots(str: string) {
     return /^[0-9 .]*$/.test(str);
 }

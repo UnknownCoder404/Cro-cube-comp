@@ -9,18 +9,13 @@ export default function GlobalError({
 }) {
     console.error(error);
     return (
-        <html>
-            <head>
-                <title>Greška</title>
-            </head>
-            <body>
-                <h2>Nešto je pošlo po zlu</h2>
-                <button onClick={() => reset()}>Pokušaj ponovno!</button>
-                <p>
-                    Ovo je vjerovatno greška u našem kodu. Kontaktirajte
-                    administratora.
-                </p>
-            </body>
-        </html>
+        <>
+            <h2>Nešto je pošlo po zlu</h2>
+            <button onClick={() => reset()}>Pokušaj ponovno!</button>
+            <p>
+                Ovo je vjerovatno greška u našem kodu. Kontaktirajte
+                administratora.
+            </p>
+        </>
     );
 }

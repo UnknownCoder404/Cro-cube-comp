@@ -17,14 +17,6 @@ export default function NotFound() {
                     <Link href="/">Povratak na početnu stranicu</Link>
                 </li>
             </ul>
-            <p>Možete pogledati status naših servera:</p>
-            <ul>
-                <li>
-                    <Link href="https://s0wc1gqn.status.cron-job.org/">
-                        Server
-                    </Link>
-                </li>
-            </ul>
         </div>
     );
 }

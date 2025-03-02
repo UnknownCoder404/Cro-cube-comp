@@ -37,7 +37,7 @@
     max-width: 150px;
     font-size: 16px;
     color: #fff;
-    background-color: #66afe9; /* Blue button */
+    background-color: var(--default-button-background-color);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -54,14 +54,26 @@
         1.05
     ); /* Scale the element to 1.05 times its original size */
 
-    background-color: #559dd6;
-    box-shadow: 0 0 8px rgb(102 175 233 / 60%);
+    background-color: var(--default-button-hover-background-color);
+    box-shadow: 0 0 8px var(--default-button-shadow-color);
 }
 
 .results:focus,
 .change-password-btn:focus,
 .backup-btn:focus {
     outline: none;
+}
+
+.user-select,
+.competition-select {
+    color: black; /* background is white, so set color of text to black */
+    max-width: 300px;
+}
+
+.user-select:focus,
+.competition-select:focus {
+    outline: 2px solid var(--default-button-background-color);
+    box-shadow: 0 0 8px var(--default-button-shadow-color);
 }
 
 .new-password {
@@ -77,8 +89,8 @@
 }
 
 .new-password:focus {
-    border-color: #66afe9;
-    box-shadow: 0 0 8px rgb(102 175 233 / 60%);
+    border-color: var(--default-button-hover-background-color);
+    box-shadow: 0 0 8px var(--default-button-shadow-color);
     outline: none;
 }
 

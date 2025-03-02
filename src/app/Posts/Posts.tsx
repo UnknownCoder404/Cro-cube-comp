@@ -1,6 +1,7 @@
 import { Posts, Post as PostType } from "../Types/posts";
 import styles from "./Posts.module.css";
-import { deletePost, editPost, isErrorWithMessage } from "../utils/posts";
+import { deletePost, editPost } from "../utils/posts";
+import { isErrorWithMessage } from "../utils/helpers/isErrorWIthMessage";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Loader } from "../components/Loader/Loader";

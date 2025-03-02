@@ -36,17 +36,17 @@
 
 .username-input:focus,
 .password-input:focus {
-    border-color: #66afe9;
-    box-shadow: 0 0 8px rgb(102 175 233 / 60%);
+    border-color: var(--default-button-background-color);
+    box-shadow: 0 0 8px var(--default-button-shadow-color);
     outline: none;
 }
 
 .submit-btn {
     padding: 10px 12px;
-    width: 50vw;
+    width: 100%;
     font-size: 18px;
     color: #fff;
-    background-color: #66afe9; /* Blue button */
+    background-color: var(--default-button-background-color);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -58,15 +58,15 @@
 
 .submit-btn:hover {
     transform: scale(1.05);
-    background-color: #559dd6;
-    box-shadow: 0 0 8px rgb(102 175 233 / 60%);
+    background-color: var(--default-button-background-color);
+    box-shadow: 0 0 8px var(--default-button-shadow-color);
 }
 
 .submit-btn:focus {
     outline: none;
 }
 
-#message {
+.message {
     margin-top: 10px;
     text-align: center;
     color: rgb(255 255 255);

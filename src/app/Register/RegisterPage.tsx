@@ -53,7 +53,7 @@ export default function RegisterPage() {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                 />
-                <br />
+
                 <input
                     type="password"
                     id="password"
@@ -63,8 +63,7 @@ export default function RegisterPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <br />
-                <br />
+
                 <div className={styles["groups-container"]}>
                     <div className={styles["group-container"]}>
                         <label htmlFor="group-1">Grupa 1</label>
@@ -91,7 +90,6 @@ export default function RegisterPage() {
                         />
                     </div>
                 </div>
-                <br />
                 <button
                     className={styles["submit-btn"]}
                     type="submit"
@@ -99,8 +97,8 @@ export default function RegisterPage() {
                 >
                     {isLoading ? <Loader /> : "Registriraj"}
                 </button>
-                <div className={styles.messageContainer}>
-                    <p id="message">{message}</p>
+                <div className={styles["message-container"]}>
+                    <p className={styles["message"]}>{message}</p>
                 </div>
             </form>
         </main>

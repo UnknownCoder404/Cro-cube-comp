@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default async function Home() {
     const fetchedPosts = await getPosts();
-    const validPosts = fetchedPosts.success ? fetchedPosts.parsed : [];
+    const posts = fetchedPosts.success ? fetchedPosts.parsed : [];
 
-    return <Cards posts={validPosts} />;
+    return <Cards posts={posts} />;
 }

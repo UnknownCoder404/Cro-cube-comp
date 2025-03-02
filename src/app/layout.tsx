@@ -12,20 +12,19 @@ const roboto = Roboto({
     display: "swap",
 });
 
-const showToolBar: boolean = process.env.SHOW_TOOLBAR === "true";
+const showToolBar = process.env.SHOW_TOOLBAR === "true";
 
-export default async function RootLayout({
+export default function RootLayout({
     children,
-}: Readonly<{
+}: {
     children: React.ReactNode;
-}>) {
+}) {
     return (
         <html lang="hr" className={roboto.className}>
             <meta
                 name="google-site-verification"
                 content="p4gzWQ-1iXVG0l_lfeyeSHMr_37F_pq6QH3hu8zmL40"
             />
-
             <body>
                 <Header />
                 <ReactQueryProvider>{children}</ReactQueryProvider>
