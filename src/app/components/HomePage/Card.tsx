@@ -1,24 +1,7 @@
-import styles from "./cards.module.css";
+import styles from "./Cards.module.css";
 import { CardProp } from "../../Types/cards";
-import DomPurify from "dompurify";
 import { useState, useEffect } from "react";
-
-function Description({
-    description,
-}: {
-    description: React.ReactNode | string;
-}) {
-    if (typeof description === "string") {
-        return (
-            <div
-                dangerouslySetInnerHTML={{
-                    __html: DomPurify.sanitize(description),
-                }}
-            />
-        );
-    }
-    return <>{description}</>;
-}
+import Description from "./Description";
 
 export default function Card({
     title,
@@ -26,6 +9,7 @@ export default function Card({
     author,
     shouldRender,
     loggedIn,
+    isPost,
 }: CardProp) {
     const [shouldCardRender, setShouldCardRender] = useState(false);
 
@@ -47,7 +31,7 @@ export default function Card({
                     className={styles["post-description-container"]}
                     aria-label="Post Description"
                 >
-                    <Description description={description} />
+                    <Description description={description} isPost={!!isPost} />
                 </div>
                 {author && (
                     <footer className={styles["post-author-container"]}>

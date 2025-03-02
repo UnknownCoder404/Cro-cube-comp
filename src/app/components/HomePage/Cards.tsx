@@ -1,7 +1,7 @@
 "use client";
 
-import styles from "./cards.module.css";
-import Card from "./card";
+import styles from "./Cards.module.css";
+import Card from "./Card";
 import { loggedIn } from "@/app/utils/credentials";
 import { staticCards } from "./staticCards";
 
@@ -25,7 +25,7 @@ function Cards({ posts }: CardsProps) {
                 <Card key={`card-${index}`} {...card} loggedIn={loggedIn()} />
             ))}
             {posts.map((post) => (
-                <Card key={post.id} {...post} />
+                <Card key={post.id} {...post} isPost={true} />
             ))}
         </main>
     );

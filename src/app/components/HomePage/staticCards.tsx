@@ -4,7 +4,7 @@ import Image from "next/image";
 import qrcode from "@/public/images/qrcode_to_website.webp";
 import { getRole, getUsername, isAdmin, logOut } from "@/app/utils/credentials";
 import { CardProp } from "@/app/Types/cards";
-import styles from "./cards.module.css";
+import styles from "./Cards.module.css";
 
 export const staticCards: () => CardProp[] = () => [
     {
