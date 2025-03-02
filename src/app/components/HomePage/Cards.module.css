@@ -13,7 +13,9 @@
     flex: 1 1 auto; /* Allow the cards to grow and shrink */
     min-width: 200px; /* Set minimum width */
     border-radius: 5px;
-    transition: background-color 0.25s, box-shadow 0.3s;
+    transition:
+        background-color 0.25s,
+        box-shadow 0.3s;
 }
 
 .card:hover {
@@ -52,22 +54,23 @@
 }
 
 .show-more-button {
-    background: none;
+    background-color: rgb(0 98 255);
     border: none;
-    color: var(--anchor-unvisited-color);
+    color: white;
     cursor: pointer;
     padding: 4px 8px;
     margin-top: 0.5rem;
-    border-radius: 4px;
+    border-radius: 10px;
     font-family: inherit;
     font-size: 0.9em;
-    transition: transform 0.3s var(--exponential), background-color 0.3s ease,
+    transition:
+        transform 0.3s var(--exponential),
+        background-color 0.3s ease,
         color 0.3s ease;
     display: inline-block;
 }
 
 .show-more-button:hover {
-    background-color: rgb(255 255 255 / 0.1);
     transform: scale(1.05);
     text-decoration: underline;
 }
