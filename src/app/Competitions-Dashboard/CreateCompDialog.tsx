@@ -4,6 +4,7 @@ import { createCompetition } from "../utils/competitions";
 import styles from "./CompetitionDashboard.module.css";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Loader } from "../components/Loader/Loader";
+import { format, parseISO } from "date-fns";
 
 const events = ["3x3", "3x3oh", "4x4", "2x2", "3x3bld", "megaminx", "teambld"];
 
@@ -171,12 +172,15 @@ function CreateCompDialog({
         const selectedEventList = Object.entries(selectedEvents)
             .filter(([, { selected }]) => selected)
             .map(([name, { rounds }]) => ({ name, rounds }));
-        const utcDate = new Date(date).toISOString();
+
+        const localDate = parseISO(date);
+        const utcDateString = format(localDate, "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+
         try {
             setIsLoading(true);
             const { success } = await createCompetition(
                 name,
-                utcDate,
+                utcDateString,
                 selectedEventList,
             );
             if (!success) throw new Error("Failed to create competition");

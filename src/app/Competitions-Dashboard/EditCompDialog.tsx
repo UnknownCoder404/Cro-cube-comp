@@ -179,7 +179,6 @@ const CompetitionForm = ({
 
             <div className={styles["form-group"]}>
                 <label htmlFor="comp-date">Datum natjecanja</label>
-                <p>Datum natjecanja unesi u svojem lokalnom vremenu.</p>
                 <input
                     type="datetime-local"
                     id="comp-date"
@@ -241,13 +240,10 @@ const EditCompDialog = ({
     const [selectedEvents, setSelectedEvents] = useState<
         Record<EventName, EventState>
     >(() => {
-        const initialEvents = EVENTS.reduce(
-            (acc, event) => {
-                acc[event] = { selected: false, rounds: 1 };
-                return acc;
-            },
-            {} as Record<EventName, EventState>,
-        );
+        const initialEvents = EVENTS.reduce((acc, event) => {
+            acc[event] = { selected: false, rounds: 1 };
+            return acc;
+        }, {} as Record<EventName, EventState>);
 
         competition.events.forEach((event) => {
             if (event.name in initialEvents) {
