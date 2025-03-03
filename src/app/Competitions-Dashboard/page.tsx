@@ -7,7 +7,7 @@ import { CreateCompButton } from "./CreateCompDialog";
 import ProtectedRoute from "../components/Common/ProtectedRoute";
 import CalendarSvg from "../components/Svg/calendar";
 import LockSvg from "../components/Svg/lock";
-import { format } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -29,8 +29,10 @@ function CurrentCompetitions({
         <main className={styles["competitions"]}>
             {competitions.map((comp) => {
                 const { name, isLocked, date, _id, events } = comp;
-                const dateFormatted = format(
+                // Use Croatia's timezone: Europe/Zagreb
+                const dateFormatted = formatInTimeZone(
                     new Date(date),
+                    "Europe/Zagreb",
                     "dd.MM.yyyy HH:mm",
                 );
 
