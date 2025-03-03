@@ -1,3 +1,4 @@
+"use client";
 import { AllowedEvents, CompetitionResultType } from "../Types/solve";
 import CompetitionEvent from "./CompetitionEvent";
 import competitionStyles from "./Competitions.module.css";
@@ -13,7 +14,7 @@ function CompetitionName({ name }: { name: string }) {
 
 // Component for displaying the competition date
 function CompetitionDate({ date }: { date: string }) {
-    const dateInLocalString = new Date(date).toLocaleString(["hr-HR"], {
+    const dateInLocalString = new Date(date).toLocaleString("hr-HR", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
