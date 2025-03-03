@@ -179,7 +179,6 @@ const CompetitionForm = ({
 
             <div className={styles["form-group"]}>
                 <label htmlFor="comp-date">Datum natjecanja</label>
-                <p>Datum natjecanja unesi u svojem lokalnom vremenu.</p>
                 <input
                     type="datetime-local"
                     id="comp-date"

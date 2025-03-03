@@ -7,6 +7,7 @@ import { CreateCompButton } from "./CreateCompDialog";
 import ProtectedRoute from "../components/Common/ProtectedRoute";
 import CalendarSvg from "../components/Svg/calendar";
 import LockSvg from "../components/Svg/lock";
+import { format } from "date-fns";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -28,16 +29,11 @@ function CurrentCompetitions({
         <main className={styles["competitions"]}>
             {competitions.map((comp) => {
                 const { name, isLocked, date, _id, events } = comp;
-                const dateFormatted = new Date(date).toLocaleDateString(
-                    ["hr-HR"],
-                    {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                    },
+                const dateFormatted = format(
+                    new Date(date),
+                    "dd.MM.yyyy HH:mm",
                 );
+
                 return (
                     <div key={_id} className={styles["competition"]}>
                         <div className={styles["title-row"]}>

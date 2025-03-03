@@ -19,6 +19,7 @@ function CompetitionDate({ date }: { date: string }) {
         year: "numeric",
         hour: "2-digit",
         minute: "2-digit",
+        timeZone: "Europe/Zagreb",
     });
     return (
         <time className={competitionStyles["comp-date"]} dateTime={date}>
