@@ -169,6 +169,12 @@ function CreateCompDialog({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // Check if at least one event is selected
+        if (Object.values(selectedEvents).every((event) => !event.selected)) {
+            alert("Izaberi barem 1 event.");
+            return;
+        }
+
         const selectedEventList = Object.entries(selectedEvents)
             .filter(([, { selected }]) => selected)
             .map(([name, { rounds }]) => ({ name, rounds }));
