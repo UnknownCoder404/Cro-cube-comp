@@ -5,6 +5,8 @@ import ReactQueryProvider from "./components/Providers/react-query-provider";
 import { AdminToolbar } from "./components/AdminToolbar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import { MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
 
 const roboto = Roboto({
     weight: ["400", "500", "700"],
@@ -27,7 +29,9 @@ export default function RootLayout({
             />
             <body>
                 <Header />
-                <ReactQueryProvider>{children}</ReactQueryProvider>
+                <MantineProvider theme={{ fontFamily: "Roboto, sans-serif" }}>
+                    <ReactQueryProvider>{children}</ReactQueryProvider>
+                </MantineProvider>
                 {showToolBar && <AdminToolbar />}
                 <SpeedInsights />
                 <Analytics />

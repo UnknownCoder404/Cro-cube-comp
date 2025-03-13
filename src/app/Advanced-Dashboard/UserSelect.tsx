@@ -1,11 +1,14 @@
 import { User, Users } from "../Types/solve";
-import Select, { Props as SelectProps } from "react-select"; // Import Props
+import { Select as MantineSelect } from "@mantine/core";
 
 type UserSelectProps = {
     users: Users;
-    setSelectedUser: (arg0: User) => void;
+    setSelectedUser: (user: User) => void;
     disabled: boolean;
-} & Omit<SelectProps, "options" | "onChange" | "isDisabled" | "defaultValue">; //  Extend SelectProps and Remove Duplicates
+} & Omit<
+    React.ComponentPropsWithoutRef<typeof MantineSelect>,
+    "data" | "onChange" | "defaultValue" | "value"
+>;
 
 function UserSelect({
     users,
@@ -18,19 +21,22 @@ function UserSelect({
         label: user.username,
     }));
     const firstUser = usersAsOptions[0];
+
     return (
-        <Select
-            instanceId={"prefix"} // Random string fixes error
-            defaultValue={firstUser}
-            options={usersAsOptions}
-            isLoading={disabled}
-            isDisabled={disabled}
-            isSearchable={true}
-            onChange={(e) =>
-                // @ts-expect-error We will fix this later, react-select is not typed correctly
-                setSelectedUser(users.find((user) => user._id === e!.value)!)
-            }
-            {...rest} // Spread the rest of the props here
+        <MantineSelect
+            disabled={disabled}
+            data={usersAsOptions}
+            defaultValue={firstUser?.value}
+            searchable
+            onChange={(value: string | null) => {
+                if (value) {
+                    const selected = users.find((user) => user._id === value);
+                    if (selected) {
+                        setSelectedUser(selected);
+                    }
+                }
+            }}
+            {...rest}
         />
     );
 }

@@ -15,6 +15,7 @@
         "format:check": "prettier **/*.{js,jsx,ts,tsx,css,scss,md,json,html} --check --cache"
     },
     "dependencies": {
+        "@mantine/core": "^7.17.1",
         "@vercel/analytics": "^1.5.0",
         "@vercel/speed-insights": "^1.2.0",
         "@vercel/toolbar": "^0.1.34",
@@ -27,7 +28,6 @@
         "react": "19.0.0",
         "react-dom": "19.0.0",
         "react-query": "^3.39.3",
-        "react-select": "^5.10.0",
         "scramble-display": "^0.6.0"
     },
     "devDependencies": {

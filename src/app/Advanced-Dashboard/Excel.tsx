@@ -6,7 +6,7 @@ import { CompetitionType } from "../Types/solve";
 import styles from "./AdvancedDashboard.module.css";
 import { addToken } from "../utils/credentials";
 import { url } from "@/globals";
-import Select, { Props as SelectProps } from "react-select";
+import { Select as MantineSelect } from "@mantine/core";
 
 type ResultsBtnProps = {
     competition: CompetitionType | undefined;
@@ -16,9 +16,10 @@ type ResultsBtnProps = {
 
 type CompSelectProps = {
     competitions: CompetitionType[];
+    selectedCompetition: CompetitionType | undefined;
     setSelectedCompetition: (arg0: CompetitionType) => void;
     disabled: boolean;
-} & Omit<SelectProps, "options" | "onChange" | "isDisabled" | "defaultValue">; // Extend SelectProps and omit conflicting props
+} & React.ComponentPropsWithoutRef<typeof MantineSelect>;
 
 const getResultsForCompById = async (id: string): Promise<Blob> => {
     const resultsUrl = new URL(url);
@@ -77,35 +78,32 @@ function ResultsBtn({ competition, setLoading, setError }: ResultsBtnProps) {
 
 function CompSelect({
     competitions,
+    selectedCompetition,
     setSelectedCompetition,
     disabled,
-    ...rest // Receive other props
+    ...rest
 }: CompSelectProps) {
-    const competitionsAsOptions = competitions.map((competition) => ({
+    // Map competitions to the data format required by Mantine's Select component
+    const data = competitions.map((competition) => ({
         value: competition._id,
         label: competition.name,
     }));
+
     return (
-        <Select
-            isDisabled={disabled}
-            isLoading={disabled}
-            options={competitionsAsOptions}
-            defaultValue={competitionsAsOptions[0]}
-            instanceId="prefix"
-            onChange={(e) => {
-                // Handle null/undefined e
-                // @ts-expect-error We will fix this later, react-select is not typed correctly
-                if (e && e.value) {
-                    const selectedComp = competitions.find(
-                        // @ts-expect-error We will fix this later, react-select is not typed correctly
-                        (c) => c._id === e.value,
-                    );
-                    if (selectedComp) {
-                        setSelectedCompetition(selectedComp);
+        <MantineSelect
+            disabled={disabled}
+            data={data}
+            // Use a controlled value based on the selected competition's id (or an empty string when not selected)
+            value={selectedCompetition ? selectedCompetition._id : ""}
+            onChange={(value: string | null) => {
+                if (value) {
+                    const selected = competitions.find((c) => c._id === value);
+                    if (selected) {
+                        setSelectedCompetition(selected);
                     }
                 }
             }}
-            {...rest} // Pass down other props
+            {...rest}
         />
     );
 }
@@ -129,9 +127,11 @@ export default function Excel({
                 <>
                     <CompSelect
                         competitions={competitions}
+                        selectedCompetition={selectedCompetition}
                         setSelectedCompetition={setSelectedCompetition}
                         disabled={loading}
-                        className={styles["competition-select"]}
+                        // className={styles["competition-select"]}
+                        placeholder="Select competition"
                     />
                     <ResultsBtn
                         setLoading={setLoading}
