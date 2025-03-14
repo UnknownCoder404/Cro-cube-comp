@@ -49,6 +49,7 @@ export async function getResults(): Promise<
         const data = await withTimeout(
             fetch(resultsUrl, {
                 cache: "no-store",
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );
@@ -84,6 +85,7 @@ export async function createCompetition(
                 method: "POST",
                 headers: headers,
                 body: JSON.stringify({ name, date, events }),
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );
@@ -115,6 +117,7 @@ export async function deleteCompetition(id: string) {
             fetch(deleteCompUrl, {
                 method: "DELETE",
                 headers: headers,
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );
@@ -145,6 +148,7 @@ export async function lockCompetition(id: string) {
             fetch(lockUrl, {
                 method: "POST",
                 headers: headers,
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );
@@ -181,6 +185,7 @@ export async function editCompetition(
                 method: "PUT",
                 headers: headers,
                 body: JSON.stringify({ name, date, events }),
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );

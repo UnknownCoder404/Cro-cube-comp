@@ -54,6 +54,7 @@ export async function deletePost(id: string): Promise<{
                 headers: {
                     Authorization: token,
                 },
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );
@@ -102,6 +103,7 @@ export async function createPost(
                 method: "POST",
                 headers: headers,
                 body: JSON.stringify({ title, description }),
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );
@@ -152,6 +154,7 @@ export async function editPost(
                     title: newTitle,
                     description: newDescription,
                 }),
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );

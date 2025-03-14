@@ -53,6 +53,7 @@ export async function deleteUserById({
         const response = await fetch(userDeletionUrl, {
             method: "DELETE",
             headers: addToken({}) || {},
+            credentials: "include",
         });
         const data = await response.json();
 
@@ -156,6 +157,7 @@ export async function deleteSolve({
                 event: eventName,
                 competitionId,
             }),
+            credentials: "include",
         });
         const data = await response.json();
 
@@ -184,6 +186,7 @@ export async function changePasswordByUsername({
             method: "POST",
             headers: addToken({ "Content-Type": "application/json" }) || {},
             body: JSON.stringify({ username, newPassword }),
+            credentials: "include",
         });
         const data = await response.json();
 
@@ -245,6 +248,7 @@ export async function registerUser({
             headers: addToken({ "Content-Type": "application/json" }) || {},
             body: JSON.stringify({ username, password, group }),
             signal: AbortSignal.timeout(5000),
+            credentials: "include",
         });
         const data = await response.json();
 
