@@ -28,16 +28,17 @@ export default function ProtectedRoute({
             try {
                 // If token needs validation, check if it's valid
                 if (validateToken) {
-                    const tokenIsValid = await tokenValid();
+                    const isTokenValid = await tokenValid();
                     // If token is invalid and user does not need to be logged out, redirect
-                    if (!tokenIsValid && require !== "loggedout") {
+                    if (!isTokenValid && require !== "loggedout") {
+                        logOut(); // Log out so the old token is not valid anymore
                         handleRedirect();
                         return;
                     }
                     // If user has to be logged out, and user is logged in, log them out
                     if (
                         require === "loggedout" &&
-                        !tokenIsValid &&
+                        !isTokenValid &&
                         isLoggedIn
                     ) {
                         // User has invalid token, but is logged in locally
