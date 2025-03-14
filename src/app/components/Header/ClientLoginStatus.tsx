@@ -9,7 +9,7 @@ import AccountCircleSvg from "../Svg/account_circle";
 
 function ClientLoginStatus() {
     const router = useRouter();
-    const { username, logout } = useAuth(); // Use useAuth hook
+    const { username, logOut } = useAuth(); // Use useAuth hook
     const loggedIn = !!username;
 
     return (
@@ -26,7 +26,7 @@ function ClientLoginStatus() {
                 fill="white"
                 onClick={() => {
                     if (loggedIn) {
-                        logout(); // Use logout from useAuth
+                        logOut();
                         router.refresh();
                     }
                 }}
