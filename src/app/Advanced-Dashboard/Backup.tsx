@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { addToken } from "../utils/credentials";
 import styles from "./AdvancedDashboard.module.css";
 import { url } from "@/globals";
 import { useQuery } from "react-query";

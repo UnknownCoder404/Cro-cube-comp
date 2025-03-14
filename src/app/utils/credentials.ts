@@ -57,24 +57,6 @@ function isAdmin(role: Role): boolean {
     return role.toUpperCase() === "ADMIN";
 }
 
-function addToken<T extends object | URL | null>(data: T): T {
-    const token = getToken();
-    if (!token) {
-        throw new Error("No token");
-    }
-
-    if (typeof data === "object") {
-        if (data instanceof URL) {
-            data.searchParams.append("token", token);
-            return data;
-        }
-
-        return { ...data, Authorization: token }; // Return a new object with token added
-    }
-
-    throw new Error("Invalid data type");
-}
-
 export {
     getUsername,
     getRole,
@@ -85,5 +67,4 @@ export {
     loggedIn,
     isUser,
     isAdmin,
-    addToken,
 };
