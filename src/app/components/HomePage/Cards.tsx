@@ -4,6 +4,7 @@ import styles from "./Cards.module.css";
 import Card from "./Card";
 import { loggedIn } from "@/app/utils/credentials";
 import { staticCards } from "./staticCards";
+import { useAuth } from "@/app/context/AuthContext";
 
 export type PostProp = {
     id: string;
@@ -19,9 +20,10 @@ export type PostProp = {
 type CardsProps = { posts: PostProp[] };
 
 function Cards({ posts }: CardsProps) {
+    const auth = useAuth();
     return (
         <main className={styles.cards} suppressHydrationWarning>
-            {staticCards().map((card, index) => (
+            {staticCards(auth).map((card, index) => (
                 <Card key={`card-${index}`} {...card} loggedIn={loggedIn()} />
             ))}
             {posts.map((post) => (

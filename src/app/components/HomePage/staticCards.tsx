@@ -2,11 +2,12 @@ import Link from "next/link";
 import handleInvite from "@/app/utils/handleInvite";
 import Image from "next/image";
 import qrcode from "@/public/images/qrcode_to_website.webp";
-import { getRole, getUsername, isAdmin, logOut } from "@/app/utils/credentials";
+import { isAdmin } from "@/app/utils/credentials";
 import { CardProp } from "@/app/Types/cards";
 import styles from "./Cards.module.css";
+import { AuthContextType } from "@/app/context/AuthContext";
 
-export const staticCards: () => CardProp[] = () => [
+export const staticCards = (auth: AuthContextType): CardProp[] => [
     {
         title: "Rezultati",
         description: (
@@ -67,11 +68,11 @@ export const staticCards: () => CardProp[] = () => [
         description: (
             <p>
                 Odjava je jednostavna! Ako se želite odjaviti iz korisničkog
-                računa {getUsername()} kliknite na{" "}
+                računa {auth.username} kliknite na{" "}
                 <span
                     className={styles["logout-span"]}
                     onClick={() => {
-                        logOut();
+                        auth.logOut();
                         window.location.reload(); // Refresh the page after logout
                     }}
                     role="button"
@@ -92,8 +93,7 @@ export const staticCards: () => CardProp[] = () => [
             </p>
         ),
         shouldRender: () => {
-            const role = getRole();
-            return !!role && isAdmin(role);
+            return !!auth.role && isAdmin(auth.role);
         },
     },
     {
@@ -105,8 +105,7 @@ export const staticCards: () => CardProp[] = () => [
             </p>
         ),
         shouldRender: () => {
-            const role = getRole();
-            return !!role && isAdmin(role);
+            return !!auth.role && isAdmin(auth.role);
         },
     },
     {
@@ -121,8 +120,7 @@ export const staticCards: () => CardProp[] = () => [
             </p>
         ),
         shouldRender: () => {
-            const role = getRole();
-            return !!role && isAdmin(role);
+            return !!auth.role && isAdmin(auth.role);
         },
     },
 ];

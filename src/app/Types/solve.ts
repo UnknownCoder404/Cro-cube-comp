@@ -1,3 +1,5 @@
+import { Role } from "../utils/credentials";
+
 export type AllowedEvents = "3x3" | "4x4" | "3x3oh" | "2x2";
 
 export type UserEvent = {
@@ -9,8 +11,6 @@ export type UserComp = {
     competitionId: string;
     events: UserEvent[];
 };
-
-export type Role = "admin" | "user";
 
 export type User = {
     _id: string;

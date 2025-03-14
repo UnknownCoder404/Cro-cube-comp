@@ -2,35 +2,15 @@
 
 import Link from "next/link";
 import headerStyles from "./Header.module.css";
-import { getUsername, logOut } from "@/app/utils/credentials";
-import { useEffect, useState } from "react";
+import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { clsx } from "clsx";
 import AccountCircleSvg from "../Svg/account_circle";
 
 function ClientLoginStatus() {
     const router = useRouter();
-    const [username, setUsername] = useState<string | null>(null);
-    const [loaded, setLoaded] = useState<boolean>(false);
+    const { username, logOut } = useAuth(); // Use useAuth hook
     const loggedIn = !!username;
-
-    useEffect(() => {
-        const syncUsername = () => {
-            setUsername(getUsername());
-        };
-
-        setUsername(getUsername());
-        setLoaded(true);
-
-        window.addEventListener("storage", syncUsername); // Listen for changes in storage
-        return () => {
-            window.removeEventListener("storage", syncUsername);
-        };
-    }, []);
-
-    if (!loaded) {
-        return <div className={headerStyles["account-container"]}></div>;
-    }
 
     return (
         <header className={headerStyles["account-container"]}>
@@ -47,7 +27,6 @@ function ClientLoginStatus() {
                 onClick={() => {
                     if (loggedIn) {
                         logOut();
-                        setUsername(null);
                         router.refresh();
                     }
                 }}
