@@ -36,7 +36,15 @@ function logOut(): void {
     localStorage.removeItem("role");
 }
 async function tokenValid(): Promise<boolean> {
-    return true;
+    const sessionUrl = new URL(url);
+    sessionUrl.pathname = "session";
+
+    const response = await fetch(sessionUrl, {
+        method: "GET",
+        credentials: "include",
+    });
+
+    return response.ok;
 }
 function loggedIn(): boolean {
     return !!getToken() && !!getRole() && !!getId();
