@@ -20,7 +20,7 @@ export default function ProtectedRoute({
 }: Props) {
     const router = useRouter();
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null); // null indicates "loading"
-    const { role, token, logout } = useAuth();
+    const { role, token, logOut } = useAuth();
     const isLoggedIn = !!token; //Much better way to check if logged in
 
     useEffect(() => {
@@ -41,7 +41,7 @@ export default function ProtectedRoute({
                         isLoggedIn
                     ) {
                         // User has invalid token, but is logged in locally
-                        logout();
+                        logOut();
                         return;
                     }
                 }
@@ -72,14 +72,14 @@ export default function ProtectedRoute({
         };
 
         validateAccess();
-    }, [require, validateToken, redirectTo, router, isLoggedIn, role, logout]);
+    }, [require, validateToken, redirectTo, router, isLoggedIn, role, logOut]);
 
     if (isAuthorized === null) {
         return null; // Hide content while loading
     }
 
     if (!isAuthorized) {
-        return null; //Hide content for unauthorized users.
+        return null; // Hide content for unauthorized users.
     }
 
     return <>{children}</>; // Render protected content
