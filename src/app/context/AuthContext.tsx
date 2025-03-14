@@ -1,6 +1,6 @@
 "use client";
 
-import { Role } from "@/app/Types/solve";
+import { Role } from "../utils/credentials";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export type AuthContextType = {
