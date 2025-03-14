@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import LoginPage from "./LoginPage";
-import ProtectedRoute from "../components/Common/ProtectedRoute";
 
 export const dynamic = "error";
 
@@ -11,9 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function Login() {
-    return (
-        <ProtectedRoute require="loggedout" redirectTo="/" validateToken>
-            <LoginPage />
-        </ProtectedRoute>
-    );
+    return <LoginPage />;
 }

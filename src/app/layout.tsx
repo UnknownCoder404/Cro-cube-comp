@@ -5,6 +5,7 @@ import ReactQueryProvider from "./components/Providers/react-query-provider";
 import { AdminToolbar } from "./components/AdminToolbar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import { AuthProvider } from "@/app/context/AuthContext";
 
 const roboto = Roboto({
     weight: ["400", "500", "700"],
@@ -26,11 +27,15 @@ export default function RootLayout({
                 content="p4gzWQ-1iXVG0l_lfeyeSHMr_37F_pq6QH3hu8zmL40"
             />
             <body>
-                <Header />
-                <ReactQueryProvider>{children}</ReactQueryProvider>
-                {showToolBar && <AdminToolbar />}
-                <SpeedInsights />
-                <Analytics />
+                <AuthProvider>
+                    <ReactQueryProvider>
+                        <Header />
+                        {children}
+                        {showToolBar && <AdminToolbar />}
+                        <SpeedInsights />
+                        <Analytics />
+                    </ReactQueryProvider>
+                </AuthProvider>
             </body>
         </html>
     );
