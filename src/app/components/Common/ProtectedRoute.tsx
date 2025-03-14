@@ -20,8 +20,8 @@ export default function ProtectedRoute({
 }: Props) {
     const router = useRouter();
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null); // null indicates "loading"
-    const { role, token, logOut } = useAuth();
-    const isLoggedIn = !!token; //Much better way to check if logged in
+    const { role, logOut } = useAuth();
+    const isLoggedIn = !!role;
 
     useEffect(() => {
         const validateAccess = async () => {

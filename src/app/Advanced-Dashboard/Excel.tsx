@@ -26,7 +26,7 @@ const getResultsForCompById = async (id: string): Promise<Blob> => {
     resultsUrl.searchParams.set("competitionId", id);
 
     const data = await fetch(resultsUrl.toString(), {
-        headers: addToken({}) || {},
+        credentials: "include",
     });
     if (!data.ok) {
         throw new Error("Error fetching results");

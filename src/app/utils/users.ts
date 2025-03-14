@@ -1,5 +1,5 @@
 import { url } from "@/globals";
-import { addToken, getId, getToken } from "./credentials";
+import { getId } from "./credentials";
 import { AllowedEvents, Users } from "../Types/solve";
 
 type ApiResponse<T> = {
@@ -52,7 +52,7 @@ export async function deleteUserById({
         userDeletionUrl.pathname = `users/${id}`;
         const response = await fetch(userDeletionUrl, {
             method: "DELETE",
-            headers: addToken({}) || {},
+            headers: {},
             credentials: "include",
         });
         const data = await response.json();
@@ -82,7 +82,8 @@ export async function assignAdminToUser({
         adminAssignmentUrl.pathname = `admin/assign/${id}`;
         const response = await fetch(adminAssignmentUrl, {
             method: "POST",
-            headers: addToken({}) || {},
+            headers: {},
+            credentials: "include",
         });
         const data = await response.json();
 
@@ -114,8 +115,8 @@ export async function addSolve({
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: getToken() || "",
             },
+            credentials: "include",
             body: JSON.stringify({
                 round: roundIndex + 1,
                 solves: { event, rounds: solves },
@@ -150,7 +151,7 @@ export async function deleteSolve({
         solvesUrl.pathname = `solves/delete/${userId}`;
         const response = await fetch(solvesUrl, {
             method: "DELETE",
-            headers: addToken({ "Content-Type": "application/json" }) || {},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 round: roundIndex + 1,
                 solve: solveIndex + 1,
@@ -184,7 +185,7 @@ export async function changePasswordByUsername({
         changePasswordUrl.pathname = "users/change-password";
         const response = await fetch(changePasswordUrl, {
             method: "POST",
-            headers: addToken({ "Content-Type": "application/json" }) || {},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, newPassword }),
             credentials: "include",
         });
@@ -245,7 +246,7 @@ export async function registerUser({
         registerUrl.pathname = "register";
         const response = await fetch(registerUrl, {
             method: "POST",
-            headers: addToken({ "Content-Type": "application/json" }) || {},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password, group }),
             signal: AbortSignal.timeout(5000),
             credentials: "include",

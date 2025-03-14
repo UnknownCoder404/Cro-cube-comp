@@ -15,12 +15,7 @@ async function handleSubmit(
     password: string,
     setMsg: Dispatch<SetStateAction<string>>,
     router: AppRouterInstance,
-    login: (
-        token: string,
-        username: string,
-        role: Role,
-        userId: string,
-    ) => void,
+    login: (username: string, role: Role, userId: string) => void,
     setLoading: (isLoading: boolean) => void,
 ) {
     setLoading(true); // Set loading to true when the submission starts.
@@ -62,10 +57,10 @@ async function handleSubmit(
             return;
         }
 
-        const { id, token, username: responseUsername, role } = data.info;
+        const { id, username: responseUsername, role } = data.info;
 
         // Use context's login function instead of localStorage
-        login(token, responseUsername, role, id);
+        login(responseUsername, role, id);
 
         // Redirect based on role
         setTimeout(

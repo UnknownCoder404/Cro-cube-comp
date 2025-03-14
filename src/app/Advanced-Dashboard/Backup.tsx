@@ -9,7 +9,7 @@ import { useQuery } from "react-query";
 async function getFile(url: string): Promise<Blob> {
     if (!url) throw new Error("URL or fileName is not defined");
     const data = await fetch(url, {
-        headers: addToken({}) || {},
+        credentials: "include",
     });
     if (!data.ok) throw new Error("Error while fetching file");
     const blob = await data.blob();
