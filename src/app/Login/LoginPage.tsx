@@ -1,19 +1,30 @@
 "use client";
+
 import styles from "./Login.module.css";
 import { url } from "@/globals";
 import { Dispatch, SetStateAction, useState } from "react";
-import { isAdmin } from "../utils/credentials";
 import { Loader } from "../components/Loader/Loader";
 import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { clsx } from "clsx";
+import { useAuth } from "@/app/context/AuthContext"; // Import useAuth
+import { Role } from "../utils/credentials";
 
 async function handleSubmit(
     username: string,
     password: string,
     setMsg: Dispatch<SetStateAction<string>>,
     router: AppRouterInstance,
+    login: (
+        token: string,
+        username: string,
+        role: Role,
+        userId: string,
+    ) => void,
+    setLoading: (isLoading: boolean) => void,
 ) {
+    setLoading(true); // Set loading to true when the submission starts.
+
     try {
         const loginUrl = new URL(url);
         loginUrl.pathname = "/login";
@@ -52,15 +63,15 @@ async function handleSubmit(
         }
 
         const { id, token, username: responseUsername, role } = data.info;
-        localStorage.setItem("id", id);
-        localStorage.setItem("token", token);
-        localStorage.setItem("username", responseUsername);
-        localStorage.setItem("role", role);
 
-        window.dispatchEvent(new Event("storage"));
+        // Use context's login function instead of localStorage
+        login(token, responseUsername, role, id);
 
-        if (isAdmin(role)) router.push("/Dashboard");
-        else router.push("/");
+        // Redirect based on role
+        setTimeout(
+            () => router.push(role === "admin" ? "/Dashboard" : "/"),
+            1000,
+        );
     } catch (error) {
         setMsg(
             `Greška prilikom prijave: ${
@@ -68,6 +79,8 @@ async function handleSubmit(
             }`,
         );
         console.error(error);
+    } finally {
+        setLoading(false); // Ensure loading is set back to false.
     }
 }
 
@@ -75,7 +88,9 @@ function ErrorMessage({ message }: { message: string }) {
     if (!message) return null;
     return (
         <div className={styles["message-container"]}>
-            <p className={styles["message"]}>{message}</p>
+            <p className={clsx(styles["message"], styles["error"])}>
+                {message}
+            </p>
         </div>
     );
 }
@@ -109,6 +124,7 @@ function LoginButton({
 
 function LoginForm() {
     const router = useRouter();
+    const { login } = useAuth(); // Get login function from context
     const [message, setMessage] = useState("");
     const [isLoading, setLoading] = useState(false);
     const [username, setUsername] = useState("");
@@ -119,13 +135,15 @@ function LoginForm() {
 
     const handleFormSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        setMessage("");
-        setLoading(true);
-        try {
-            await handleSubmit(username, password, setMessage, router);
-        } finally {
-            setLoading(false);
-        }
+        setMessage(""); // Clear previous message on new submission attempt.
+        await handleSubmit(
+            username,
+            password,
+            setMessage,
+            router,
+            login,
+            setLoading,
+        );
     };
 
     return (

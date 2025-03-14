@@ -1,18 +1,15 @@
 import { clsx } from "clsx";
-import { getId, isAdmin, Role } from "@/app/utils/credentials";
+import { isAdmin, Role } from "@/app/utils/credentials";
 import dashboardStyles from "@/app/Dashboard/Dashboard.module.css";
 import { assignAdminToUser, deleteUserById } from "@/app/utils/users";
 import { useRouter } from "next/navigation";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { User } from "@/app/Types/solve";
+import { useAuth } from "@/app/context/AuthContext";
 
-function DeleteUserButton({
-    id,
-    router,
-}: {
-    id: string;
-    router: AppRouterInstance;
-}) {
+function DeleteUserButton({ id }: { id: string }) {
+    const { userId } = useAuth();
+    const router = useRouter();
+
     return (
         <button
             className={clsx(
@@ -20,7 +17,7 @@ function DeleteUserButton({
                 dashboardStyles["remove-btn"],
             )}
             onClick={async () => {
-                if (id === getId()) {
+                if (id === userId) {
                     return alert("Ne možete izbrisati vlastiti računa.");
                 }
                 const userDeletion = await deleteUserById({ id });
@@ -38,15 +35,9 @@ function DeleteUserButton({
     );
 }
 
-function AdminButton({
-    role,
-    id,
-    router,
-}: {
-    role: Role;
-    id: string;
-    router: AppRouterInstance;
-}) {
+function AdminButton({ role, id }: { role: Role; id: string }) {
+    const router = useRouter();
+
     return (
         <button
             className={clsx(dashboardStyles["user-btn"], {
@@ -93,11 +84,10 @@ type Props = {
 };
 
 export default function UserButtons({ user, toggleCompVisibility }: Props) {
-    const router = useRouter();
     return (
         <div className={dashboardStyles["user-btns"]}>
-            <DeleteUserButton id={user._id} router={router} />
-            <AdminButton role={user.role} id={user._id} router={router} />
+            <DeleteUserButton id={user._id} />
+            <AdminButton role={user.role} id={user._id} />
             <CompButton toggleCompVisibility={toggleCompVisibility} />
         </div>
     );

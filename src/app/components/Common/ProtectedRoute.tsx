@@ -1,14 +1,9 @@
 "use client";
 
-import {
-    getRole,
-    isAdmin,
-    loggedIn,
-    logOut,
-    tokenValid,
-} from "@/app/utils/credentials";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/app/context/AuthContext";
+import { tokenValid } from "@/app/utils/credentials";
 
 type Props = {
     redirectTo?: string; // Optional redirection URL
@@ -25,25 +20,25 @@ export default function ProtectedRoute({
 }: Props) {
     const router = useRouter();
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null); // null indicates "loading"
-    const isLoggedIn = loggedIn();
+    const { role, token, logOut } = useAuth();
+    const isLoggedIn = !!token; //Much better way to check if logged in
 
     useEffect(() => {
         const validateAccess = async () => {
             try {
-                const role = getRole();
-
                 // If token needs validation, check if it's valid
                 if (validateToken) {
-                    const tokenIsValid = await tokenValid();
+                    const isTokenValid = await tokenValid();
                     // If token is invalid and user does not need to be logged out, redirect
-                    if (!tokenIsValid && require !== "loggedout") {
+                    if (!isTokenValid && require !== "loggedout") {
+                        logOut(); // Log out so the old token is not valid anymore
                         handleRedirect();
                         return;
                     }
                     // If user has to be logged out, and user is logged in, log them out
                     if (
                         require === "loggedout" &&
-                        !tokenIsValid &&
+                        !isTokenValid &&
                         isLoggedIn
                     ) {
                         // User has invalid token, but is logged in locally
@@ -55,8 +50,8 @@ export default function ProtectedRoute({
                 // Check for other cases
                 if (
                     (require === "loggedin" && !isLoggedIn) ||
-                    (require === "admin" && (!role || !isAdmin(role))) ||
-                    (require === "loggedout" && role)
+                    (require === "admin" && role !== "admin") || // Simplified admin check
+                    (require === "loggedout" && isLoggedIn) // Simplified loggedout
                 ) {
                     handleRedirect();
                     return;
@@ -78,10 +73,14 @@ export default function ProtectedRoute({
         };
 
         validateAccess();
-    }, [require, validateToken, redirectTo, router, isLoggedIn]);
+    }, [require, validateToken, redirectTo, router, isLoggedIn, role, logOut]);
+
+    if (isAuthorized === null) {
+        return null; // Hide content while loading
+    }
 
     if (!isAuthorized) {
-        return null; // Hide content for unauthorized users or loading state
+        return null; // Hide content for unauthorized users.
     }
 
     return <>{children}</>; // Render protected content
