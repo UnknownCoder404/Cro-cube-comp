@@ -73,7 +73,6 @@ export const staticCards = (auth: AuthContextType): CardProp[] => [
                     className={styles["logout-span"]}
                     onClick={() => {
                         auth.logOut();
-                        window.location.reload(); // Refresh the page after logout
                     }}
                     role="button"
                     aria-label="Kliknite na ovu poveznicu da biste se odjavili"

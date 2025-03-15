@@ -1,6 +1,5 @@
 import { url } from "@/globals";
 import { CompetitionResultsType, CompetitionType } from "../Types/solve";
-import { addToken } from "./credentials";
 import { withTimeout } from "./helpers/withTimeout";
 
 const TIMEOUT_DURATION = 5000; // Timeout in milliseconds
@@ -49,6 +48,7 @@ export async function getResults(): Promise<
         const data = await withTimeout(
             fetch(resultsUrl, {
                 cache: "no-store",
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );
@@ -74,7 +74,6 @@ export async function createCompetition(
         rounds: number;
     }[],
 ) {
-    const headers = addToken({ "Content-Type": "application/json" }) || {};
     const compCreationUrl = new URL(url);
     compCreationUrl.pathname = "competitions/create";
 
@@ -82,8 +81,9 @@ export async function createCompetition(
         const response = await withTimeout(
             fetch(compCreationUrl, {
                 method: "POST",
-                headers: headers,
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, date, events }),
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );
@@ -108,13 +108,13 @@ export async function createCompetition(
 export async function deleteCompetition(id: string) {
     const deleteCompUrl = new URL(url);
     deleteCompUrl.pathname = `competitions/${id}`;
-    const headers = addToken({ "Content-Type": "application/json" }) || {};
 
     try {
         const response = await withTimeout(
             fetch(deleteCompUrl, {
                 method: "DELETE",
-                headers: headers,
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );
@@ -138,13 +138,13 @@ export async function deleteCompetition(id: string) {
 export async function lockCompetition(id: string) {
     const lockUrl = new URL(url);
     lockUrl.pathname = `competitions/${id}/lock`;
-    const headers = addToken({ "Content-Type": "application/json" }) || {};
 
     try {
         const response = await withTimeout(
             fetch(lockUrl, {
                 method: "POST",
-                headers: headers,
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );
@@ -173,14 +173,14 @@ export async function editCompetition(
 ) {
     const editCompUrl = new URL(url);
     editCompUrl.pathname = `competitions/${id}`;
-    const headers = addToken({ "Content-Type": "application/json" }) || {};
 
     try {
         const response = await withTimeout(
             fetch(editCompUrl, {
                 method: "PUT",
-                headers: headers,
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, date, events }),
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );
