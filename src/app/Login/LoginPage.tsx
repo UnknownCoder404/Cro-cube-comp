@@ -7,7 +7,7 @@ import { Loader } from "../components/Loader/Loader";
 import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { clsx } from "clsx";
-import { useAuth } from "@/app/context/AuthContext"; // Import useAuth
+import { useAuth } from "@/app/context/AuthContext";
 import { Role } from "../utils/credentials";
 
 async function handleSubmit(
@@ -63,10 +63,7 @@ async function handleSubmit(
         login(responseUsername, role, id);
 
         // Redirect based on role
-        setTimeout(
-            () => router.push(role === "admin" ? "/Dashboard" : "/"),
-            1000,
-        );
+        router.push(role === "admin" ? "/Dashboard" : "/");
     } catch (error) {
         setMsg(
             `Greška prilikom prijave: ${

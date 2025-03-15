@@ -1,5 +1,6 @@
 "use client";
 
+import { url } from "@/globals";
 import { Role } from "../utils/credentials";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -41,6 +42,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUsername(null);
         setRole(null);
         setUserId(null);
+
+        const logOutUrl = new URL(url);
+        logOutUrl.pathname = "session/logout";
+        fetch(logOutUrl, {
+            credentials: "include",
+        });
     };
 
     return (

@@ -29,12 +29,6 @@ function getToken(): string | null {
     const token = localStorage.getItem("token");
     return token;
 }
-function logOut(): void {
-    if (typeof window === "undefined") return;
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    localStorage.removeItem("role");
-}
 async function tokenValid(): Promise<boolean> {
     const sessionUrl = new URL(url);
     sessionUrl.pathname = "session";
@@ -47,7 +41,7 @@ async function tokenValid(): Promise<boolean> {
     return response.ok;
 }
 function loggedIn(): boolean {
-    return !!getToken() && !!getRole() && !!getId();
+    return !!getRole() && !!getId();
 }
 
 function isUser(role: Role): boolean {
@@ -62,7 +56,6 @@ export {
     getRole,
     getId,
     getToken,
-    logOut,
     tokenValid,
     loggedIn,
     isUser,
