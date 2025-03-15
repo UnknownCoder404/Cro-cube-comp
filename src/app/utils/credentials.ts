@@ -24,11 +24,7 @@ function getId(): string | null {
     const id = localStorage.getItem("id");
     return id;
 }
-function getToken(): string | null {
-    if (typeof window === "undefined") return null;
-    const token = localStorage.getItem("token");
-    return token;
-}
+
 async function tokenValid(): Promise<boolean> {
     const sessionUrl = new URL(url);
     sessionUrl.pathname = "session";
@@ -37,7 +33,7 @@ async function tokenValid(): Promise<boolean> {
         method: "GET",
         credentials: "include",
     });
-
+    console.log("Checked if token is valid, got: ", response.ok);
     return response.ok;
 }
 function loggedIn(): boolean {
@@ -51,13 +47,4 @@ function isAdmin(role: Role): boolean {
     return role.toUpperCase() === "ADMIN";
 }
 
-export {
-    getUsername,
-    getRole,
-    getId,
-    getToken,
-    tokenValid,
-    loggedIn,
-    isUser,
-    isAdmin,
-};
+export { getUsername, getRole, getId, tokenValid, loggedIn, isUser, isAdmin };

@@ -8,6 +8,7 @@ export type AuthContextType = {
     username: string | null;
     role: Role | null;
     userId: string | null;
+    isLoggedIn: boolean;
     login: (username: string, role: Role, userId: string) => void;
     logOut: () => void;
 };
@@ -18,12 +19,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [username, setUsername] = useState<string | null>(null);
     const [role, setRole] = useState<Role | null>(null);
     const [userId, setUserId] = useState<string | null>(null);
+    const isLoggedIn = !!username;
 
     useEffect(() => {
         // Initialize from localStorage
-        setUsername(localStorage.getItem("username"));
-        setRole(localStorage.getItem("role") as Role | null);
-        setUserId(localStorage.getItem("id"));
+        const storedUsername = localStorage.getItem("username");
+        const storedRole = localStorage.getItem("role") as Role | null;
+        const storedUserId = localStorage.getItem("id");
+
+        setUsername(storedUsername);
+        setRole(storedRole);
+        setUserId(storedUserId);
     }, []);
 
     const login = (username: string, role: Role, userId: string) => {
@@ -51,7 +57,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <AuthContext.Provider value={{ username, role, userId, login, logOut }}>
+        <AuthContext.Provider
+            value={{ username, role, userId, isLoggedIn, login, logOut }}
+        >
             {children}
         </AuthContext.Provider>
     );
