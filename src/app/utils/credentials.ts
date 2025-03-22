@@ -24,28 +24,20 @@ function getId(): string | null {
     const id = localStorage.getItem("id");
     return id;
 }
-function getToken(): string | null {
-    if (typeof window === "undefined") return null;
-    const token = localStorage.getItem("token");
-    return token;
-}
-function logOut(): void {
-    if (typeof window === "undefined") return;
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    localStorage.removeItem("role");
-}
+
 async function tokenValid(): Promise<boolean> {
-    const token = getToken();
-    if (!token) return false;
-    const tokenValidUrl = new URL(url);
-    tokenValidUrl.pathname = "token";
-    tokenValidUrl.searchParams.append("token", token);
-    const data = await fetch(tokenValidUrl);
-    return data.ok;
+    const sessionUrl = new URL(url);
+    sessionUrl.pathname = "session";
+
+    const response = await fetch(sessionUrl, {
+        method: "GET",
+        credentials: "include",
+    });
+    console.log("Checked if token is valid, got: ", response.ok);
+    return response.ok;
 }
 function loggedIn(): boolean {
-    return !!getToken() && !!getRole() && !!getId();
+    return !!getRole() && !!getId();
 }
 
 function isUser(role: Role): boolean {
@@ -55,33 +47,4 @@ function isAdmin(role: Role): boolean {
     return role.toUpperCase() === "ADMIN";
 }
 
-function addToken<T extends object | URL | null>(data: T): T {
-    const token = getToken();
-    if (!token) {
-        throw new Error("No token");
-    }
-
-    if (typeof data === "object") {
-        if (data instanceof URL) {
-            data.searchParams.append("token", token);
-            return data;
-        }
-
-        return { ...data, Authorization: token }; // Return a new object with token added
-    }
-
-    throw new Error("Invalid data type");
-}
-
-export {
-    getUsername,
-    getRole,
-    getId,
-    getToken,
-    logOut,
-    tokenValid,
-    loggedIn,
-    isUser,
-    isAdmin,
-    addToken,
-};
+export { getUsername, getRole, getId, tokenValid, loggedIn, isUser, isAdmin };

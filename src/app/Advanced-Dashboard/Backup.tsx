@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { addToken } from "../utils/credentials";
 import styles from "./AdvancedDashboard.module.css";
 import { url } from "@/globals";
 import { useQuery } from "react-query";
@@ -9,7 +8,7 @@ import { useQuery } from "react-query";
 async function getFile(url: string): Promise<Blob> {
     if (!url) throw new Error("URL or fileName is not defined");
     const data = await fetch(url, {
-        headers: addToken({}) || {},
+        credentials: "include",
     });
     if (!data.ok) throw new Error("Error while fetching file");
     const blob = await data.blob();

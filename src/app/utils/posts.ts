@@ -1,6 +1,5 @@
 import { url } from "@/globals";
 import { Posts } from "../Types/posts";
-import { addToken, getToken } from "./credentials";
 import { withTimeout } from "./helpers/withTimeout";
 
 const TIMEOUT_DURATION = 5000; // Timeout in milliseconds
@@ -41,19 +40,13 @@ export async function deletePost(id: string): Promise<{
     statusCode: number;
     success: boolean;
 }> {
-    const token = getToken();
-    if (!token) {
-        throw new Error("No token found");
-    }
     try {
         const postsUrl = new URL(url);
         postsUrl.pathname = `/posts/delete/${id}`;
         const response = await withTimeout(
             fetch(postsUrl, {
                 method: "DELETE",
-                headers: {
-                    Authorization: token,
-                },
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );
@@ -90,18 +83,17 @@ export async function createPost(
     }
 
     try {
-        const headers =
-            addToken({
-                "Content-Type": "application/json",
-            }) || {};
         const createPostUrl = new URL(url);
         createPostUrl.pathname = "/posts/new";
 
         const response = await withTimeout(
             fetch(createPostUrl, {
                 method: "POST",
-                headers: headers,
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify({ title, description }),
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );
@@ -137,21 +129,20 @@ export async function editPost(
     if (!id || !newTitle || !newDescription) {
         throw new Error("New title, description, and ID are required.");
     }
-    const headers =
-        addToken({
-            "Content-Type": "application/json",
-        }) || {};
     const editPostUrl = new URL(url);
     editPostUrl.pathname = `/posts/edit/${id}`;
     try {
         const response = await withTimeout(
             fetch(editPostUrl, {
                 method: "PUT",
-                headers: headers,
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify({
                     title: newTitle,
                     description: newDescription,
                 }),
+                credentials: "include",
             }),
             TIMEOUT_DURATION,
         );

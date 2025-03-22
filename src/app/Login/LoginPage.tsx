@@ -7,7 +7,7 @@ import { Loader } from "../components/Loader/Loader";
 import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { clsx } from "clsx";
-import { useAuth } from "@/app/context/AuthContext"; // Import useAuth
+import { useAuth } from "@/app/context/AuthContext";
 import { Role } from "../utils/credentials";
 
 async function handleSubmit(
@@ -15,12 +15,7 @@ async function handleSubmit(
     password: string,
     setMsg: Dispatch<SetStateAction<string>>,
     router: AppRouterInstance,
-    login: (
-        token: string,
-        username: string,
-        role: Role,
-        userId: string,
-    ) => void,
+    login: (username: string, role: Role, userId: string) => void,
     setLoading: (isLoading: boolean) => void,
 ) {
     setLoading(true); // Set loading to true when the submission starts.
@@ -35,6 +30,7 @@ async function handleSubmit(
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ username, password }),
+            credentials: "include",
         });
 
         const data = await response.json();
@@ -61,16 +57,13 @@ async function handleSubmit(
             return;
         }
 
-        const { id, token, username: responseUsername, role } = data.info;
+        const { id, username: responseUsername, role } = data.info;
 
         // Use context's login function instead of localStorage
-        login(token, responseUsername, role, id);
+        login(responseUsername, role, id);
 
         // Redirect based on role
-        setTimeout(
-            () => router.push(role === "admin" ? "/Dashboard" : "/"),
-            1000,
-        );
+        router.push(role === "admin" ? "/Dashboard" : "/");
     } catch (error) {
         setMsg(
             `Greška prilikom prijave: ${

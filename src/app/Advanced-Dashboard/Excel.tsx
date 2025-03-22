@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { CompetitionType } from "../Types/solve";
 import styles from "./AdvancedDashboard.module.css";
-import { addToken } from "../utils/credentials";
 import { url } from "@/globals";
 import Select, { Props as SelectProps } from "react-select";
 
@@ -26,7 +25,7 @@ const getResultsForCompById = async (id: string): Promise<Blob> => {
     resultsUrl.searchParams.set("competitionId", id);
 
     const data = await fetch(resultsUrl.toString(), {
-        headers: addToken({}) || {},
+        credentials: "include",
     });
     if (!data.ok) {
         throw new Error("Error fetching results");
