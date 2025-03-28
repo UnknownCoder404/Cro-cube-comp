@@ -1,1 +1,1 @@
-export const url = new URL("https://cubing-competition-server.onrender.com");
+export const url = new URL("https://api.crocubecomp.com");
