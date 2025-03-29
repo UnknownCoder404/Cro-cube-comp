@@ -75,7 +75,7 @@ export async function createCompetition(
     }[],
 ) {
     const compCreationUrl = new URL(url);
-    compCreationUrl.pathname = "competitions/create";
+    compCreationUrl.pathname = "competitions";
 
     try {
         const response = await withTimeout(
@@ -137,7 +137,7 @@ export async function deleteCompetition(id: string) {
 
 export async function lockCompetition(id: string) {
     const lockUrl = new URL(url);
-    lockUrl.pathname = `competitions/${id}/lock`;
+    lockUrl.pathname = `competitions/${id}/actions/toggle-lock`;
 
     try {
         const response = await withTimeout(

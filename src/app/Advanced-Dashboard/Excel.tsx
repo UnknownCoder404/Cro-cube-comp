@@ -21,8 +21,7 @@ type CompSelectProps = {
 
 const getResultsForCompById = async (id: string): Promise<Blob> => {
     const resultsUrl = new URL(url);
-    resultsUrl.pathname = "results";
-    resultsUrl.searchParams.set("competitionId", id);
+    resultsUrl.pathname = `competitions/${id}/results`;
 
     const data = await fetch(resultsUrl.toString(), {
         credentials: "include",

@@ -44,13 +44,18 @@ function EditPostModal({
         return () => dialog.removeEventListener("close", handleDialogClose);
     }, [isShown, onClose]);
 
-    const handleEdit = async () => {
+    const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         setIsLoading(true);
         try {
             const { success } = await editPost(post.id, title, description);
+            onClose();
             if (success) router.refresh();
-        } catch {
-            alert("Greška prilikom editiranja objave.");
+        } catch (e) {
+            const message = isErrorWithMessage(e)
+                ? e.message
+                : "Greška pri uređivanju objave.";
+            alert(message);
         } finally {
             setIsLoading(false);
         }

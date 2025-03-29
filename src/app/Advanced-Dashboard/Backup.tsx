@@ -23,7 +23,7 @@ export default function Backup() {
         error,
     } = useQuery(["backup"], async () => {
         const backupUrl = new URL(url);
-        backupUrl.pathname = "backup";
+        backupUrl.pathname = "system/backup";
         return await getFile(backupUrl.toString());
     });
 

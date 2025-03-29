@@ -26,7 +26,7 @@ type DeleteSolveParams = {
     solveIndex: number;
 };
 type ChangePasswordParams = {
-    username: string;
+    id: string;
     newPassword: string;
 };
 type RegisterUserParams = {
@@ -79,7 +79,7 @@ export async function assignAdminToUser({
 }: AssignAdminToUserParams): Promise<ApiResponse<{ message?: string }>> {
     try {
         const adminAssignmentUrl = new URL(url);
-        adminAssignmentUrl.pathname = `admin/assign/${id}`;
+        adminAssignmentUrl.pathname = `users/${id}/actions/toggle-admin`;
         const response = await fetch(adminAssignmentUrl, {
             method: "POST",
             headers: {},
@@ -110,7 +110,7 @@ export async function addSolve({
 }: AddSolveParams): Promise<ApiResponse<{ message?: string }>> {
     try {
         const solvesUrl = new URL(url);
-        solvesUrl.pathname = `solves/add/${userId}`;
+        solvesUrl.pathname = `solves/${userId}`;
         const response = await fetch(solvesUrl, {
             method: "POST",
             headers: {
@@ -148,7 +148,7 @@ export async function deleteSolve({
 }: DeleteSolveParams): Promise<ApiResponse<{ message?: string }>> {
     try {
         const solvesUrl = new URL(url);
-        solvesUrl.pathname = `solves/delete/${userId}`;
+        solvesUrl.pathname = `solves/${userId}`;
         const response = await fetch(solvesUrl, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
@@ -174,19 +174,19 @@ export async function deleteSolve({
 }
 
 /**
- * Change password for a user by username
+ * Change password for a user by ID
  */
-export async function changePasswordByUsername({
-    username,
+export async function changePasswordById({
+    id,
     newPassword,
 }: ChangePasswordParams): Promise<ApiResponse<{ message?: string }>> {
     try {
         const changePasswordUrl = new URL(url);
-        changePasswordUrl.pathname = "users/change-password";
+        changePasswordUrl.pathname = `users/${id}/password`;
         const response = await fetch(changePasswordUrl, {
-            method: "POST",
+            method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, newPassword }),
+            body: JSON.stringify({ newPassword }),
             credentials: "include",
         });
         const data = await response.json();
@@ -243,7 +243,7 @@ export async function registerUser({
 > {
     try {
         const registerUrl = new URL(url);
-        registerUrl.pathname = "register";
+        registerUrl.pathname = "users/register";
         const response = await fetch(registerUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },

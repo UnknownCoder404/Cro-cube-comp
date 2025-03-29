@@ -49,7 +49,7 @@ function AdminButton({ role, id }: { role: Role; id: string }) {
                 if (!adminAssignment.success) {
                     return alert(
                         adminAssignment.message ||
-                            "Greška pri dodavanju korisnika.",
+                            "Greška pri mijenjaju uloge korisnika.",
                     );
                 }
                 router.refresh();
