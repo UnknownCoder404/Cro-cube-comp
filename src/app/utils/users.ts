@@ -26,7 +26,7 @@ type DeleteSolveParams = {
     solveIndex: number;
 };
 type ChangePasswordParams = {
-    username: string;
+    id: string;
     newPassword: string;
 };
 type RegisterUserParams = {
@@ -174,19 +174,19 @@ export async function deleteSolve({
 }
 
 /**
- * Change password for a user by username
+ * Change password for a user by ID
  */
-export async function changePasswordByUsername({
-    username,
+export async function changePasswordById({
+    id,
     newPassword,
 }: ChangePasswordParams): Promise<ApiResponse<{ message?: string }>> {
     try {
         const changePasswordUrl = new URL(url);
-        changePasswordUrl.pathname = "users/change-password";
+        changePasswordUrl.pathname = `users/${id}/password`;
         const response = await fetch(changePasswordUrl, {
-            method: "POST",
+            method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, newPassword }),
+            body: JSON.stringify({ newPassword }),
             credentials: "include",
         });
         const data = await response.json();

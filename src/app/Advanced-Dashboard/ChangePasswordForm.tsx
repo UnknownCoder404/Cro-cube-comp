@@ -4,7 +4,7 @@ import { useState } from "react";
 import { User, Users } from "../Types/solve";
 import styles from "./AdvancedDashboard.module.css";
 import UserSelect from "./UserSelect";
-import { changePasswordByUsername } from "../utils/users";
+import { changePasswordById } from "../utils/users";
 
 export function ChangePasswordForm({ users }: { users: Users }) {
     const [selectedUserToChangePassword, setSelectedUserToChangePassword] =
@@ -24,8 +24,8 @@ export function ChangePasswordForm({ users }: { users: Users }) {
         setLoading(true);
 
         try {
-            const passwordChange = await changePasswordByUsername({
-                username: selectedUserToChangePassword.username,
+            const passwordChange = await changePasswordById({
+                id: selectedUserToChangePassword._id,
                 newPassword,
             });
 

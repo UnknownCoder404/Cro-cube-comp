@@ -27,14 +27,15 @@ function getId(): string | null {
 
 async function tokenValid(): Promise<boolean> {
     const sessionUrl = new URL(url);
-    sessionUrl.pathname = "session";
+    sessionUrl.pathname = "auth/session";
 
     const response = await fetch(sessionUrl, {
         method: "GET",
         credentials: "include",
     });
-    console.log("Checked if token is valid, got: ", response.ok);
-    return response.ok;
+    const isTokenValid = response.status !== 401;
+    console.log("Checked if token is valid, got: ", isTokenValid);
+    return isTokenValid;
 }
 function loggedIn(): boolean {
     return !!getRole() && !!getId();

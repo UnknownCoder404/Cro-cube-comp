@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUserId(null);
 
         const logOutUrl = new URL(url);
-        logOutUrl.pathname = "session/logout";
+        logOutUrl.pathname = "auth/session/logout";
         fetch(logOutUrl, {
             method: "POST",
             credentials: "include",

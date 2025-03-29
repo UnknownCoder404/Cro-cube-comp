@@ -22,7 +22,7 @@ async function handleSubmit(
 
     try {
         const loginUrl = new URL(url);
-        loginUrl.pathname = "/login";
+        loginUrl.pathname = "/auth/login";
 
         const response = await fetch(loginUrl, {
             method: "POST",
