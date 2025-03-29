@@ -1,14 +1,34 @@
 "use client";
 
-import styles from "./Login.module.css";
-import { url } from "@/globals";
 import { Dispatch, SetStateAction, useState } from "react";
-import { Loader } from "../components/Loader/Loader";
 import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { clsx } from "clsx";
+import { posthog } from "posthog-js"; // Import PostHog
+
+import styles from "./Login.module.css";
+import { url } from "@/globals";
+import { Loader } from "../components/Loader/Loader";
 import { useAuth } from "@/app/context/AuthContext";
 import { Role } from "../utils/credentials";
+
+// API function separated for cleaner code
+async function loginUser(username: string, password: string) {
+    const loginUrl = new URL(url);
+    loginUrl.pathname = "/auth/login";
+
+    const response = await fetch(loginUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+        credentials: "include",
+    });
+
+    const data = await response.json();
+    return { response, data };
+}
 
 async function handleSubmit(
     username: string,
@@ -18,61 +38,94 @@ async function handleSubmit(
     login: (username: string, role: Role, userId: string) => void,
     setLoading: (isLoading: boolean) => void,
 ) {
-    setLoading(true); // Set loading to true when the submission starts.
+    setLoading(true);
 
     try {
-        const loginUrl = new URL(url);
-        loginUrl.pathname = "/auth/login";
+        const { response, data } = await loginUser(username, password);
 
-        const response = await fetch(loginUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ username, password }),
-            credentials: "include",
-        });
-
-        const data = await response.json();
-
+        // Handle different response status codes
         if (response.status === 429) {
-            setMsg(
-                "Prekoračen je broj pokušaja. Pokušajte ponovno za par minuta.",
-            );
+            const errorMessage =
+                "Prekoračen je broj pokušaja. Pokušajte ponovno za par minuta.";
+            setMsg(errorMessage);
+
+            // Track rate limit error
+            posthog.capture("login_failed", {
+                reason: "rate_limited",
+                statusCode: response.status,
+                errorMessage: errorMessage,
+            });
             return;
         }
 
         if (response.status === 401) {
-            setMsg("Netočno korisničko ime ili lozinka.");
+            const errorMessage = "Netočno korisničko ime ili lozinka.";
+            setMsg(errorMessage);
+
+            // Track invalid credentials
+            posthog.capture("login_failed", {
+                reason: "invalid_credentials",
+                statusCode: response.status,
+                errorMessage: errorMessage,
+            });
             return;
         }
 
         if (!response.ok) {
-            setMsg(`Došlo je do greške: ${response.statusText}`);
+            const errorMessage = `Došlo je do greške: ${response.statusText}`;
+            setMsg(errorMessage);
+
+            // Track server error
+            posthog.capture("login_failed", {
+                reason: "server_error",
+                statusCode: response.status,
+                statusText: response.statusText,
+                errorMessage: errorMessage,
+            });
             return;
         }
 
         if (!data.info) {
-            setMsg("Neočekivani odgovor od servera.");
+            const errorMessage = "Neočekivani odgovor od servera.";
+            setMsg(errorMessage);
+
+            // Track malformed response
+            posthog.capture("login_failed", {
+                reason: "malformed_response",
+                statusCode: response.status,
+                errorMessage: errorMessage,
+            });
             return;
         }
 
         const { id, username: responseUsername, role } = data.info;
 
-        // Use context's login function instead of localStorage
+        // Login and redirect
         login(responseUsername, role, id);
 
-        // Redirect based on role
+        // Track successful login
+        posthog.capture("login_successful", {
+            role: role,
+            userId: id,
+        });
+
         router.push(role === "admin" ? "/Dashboard" : "/");
     } catch (error) {
-        setMsg(
-            `Greška prilikom prijave: ${
-                error instanceof Error ? error.message : "Nepoznata greška"
-            }`,
-        );
+        const errorMessage = `Greška prilikom prijave: ${
+            error instanceof Error ? error.message : "Nepoznata greška"
+        }`;
+        setMsg(errorMessage);
         console.error(error);
+
+        // Track unexpected error
+        posthog.capture("login_failed", {
+            reason: "unexpected_error",
+            errorDetails:
+                error instanceof Error ? error.message : "Unknown error",
+            errorMessage: errorMessage,
+        });
     } finally {
-        setLoading(false); // Ensure loading is set back to false.
+        setLoading(false);
     }
 }
 

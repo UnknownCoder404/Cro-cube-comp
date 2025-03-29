@@ -40,3 +40,5 @@ next-env.d.ts
 
 # Custom scripts
 scripts
+.env
+.env.local

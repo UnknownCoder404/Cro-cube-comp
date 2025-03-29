@@ -1,1 +1,1 @@
-export const url = new URL("https://api.crocubecomp.com");
+export const url = new URL("http://localhost:3000");
