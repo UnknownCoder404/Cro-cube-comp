@@ -7,7 +7,6 @@ import { CompetitionType } from "../Types/solve";
 import { Loader } from "../components/Loader/Loader";
 import { editCompetition } from "../utils/competitions";
 import styles from "./CompDialog.module.css";
-import posthog from "posthog-js";
 
 // Constants
 const EVENTS = [
@@ -151,22 +150,9 @@ const CompetitionForm = ({
                 throw new Error("Greška prilikom izmjene");
             }
 
-            posthog.capture("competition_edit_successful", {
-                id: competition._id,
-                name,
-                date: utcDate,
-                events: eventsList.map((event) => event.name),
-            });
-
             router.refresh();
             closeModal();
         } catch (error) {
-            posthog.capture("competition_edit_fail", {
-                id: competition._id,
-                name,
-                date,
-                error,
-            });
             console.error("Error editing competition:", error);
             alert("Dogodila se greška prilikom izmjene natjecanja");
         } finally {
@@ -268,10 +254,13 @@ const EditCompDialog = ({
     const [selectedEvents, setSelectedEvents] = useState<
         Record<EventName, EventState>
     >(() => {
-        const initialEvents = EVENTS.reduce((acc, event) => {
-            acc[event] = { selected: false, rounds: 1 };
-            return acc;
-        }, {} as Record<EventName, EventState>);
+        const initialEvents = EVENTS.reduce(
+            (acc, event) => {
+                acc[event] = { selected: false, rounds: 1 };
+                return acc;
+            },
+            {} as Record<EventName, EventState>,
+        );
 
         competition.events.forEach((event) => {
             if (event.name in initialEvents) {
