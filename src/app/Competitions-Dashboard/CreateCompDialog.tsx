@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { createCompetition } from "../utils/competitions";
-import styles from "./CompetitionDashboard.module.css";
+import styles from "./CompDialog.module.css";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Loader } from "../components/Loader/Loader";
 import { format, parseISO } from "date-fns";
@@ -21,33 +21,47 @@ function EventSelection({
     ) => void;
 }) {
     return (
-        <>
+        <div className={styles.eventSelectionContainer}>
+            <label className={styles.mainEventLabel}>Eventovi</label>
             {events.map((event, index) => (
-                <div key={index}>
+                <div key={index} className={styles.eventItem}>
                     <input
                         type="checkbox"
                         id={`event-${index}`}
                         name={event}
                         onChange={handleEventChange}
+                        className={styles.checkbox}
                     />
-                    <label htmlFor={`event-${index}`}>{event}</label>
-                    <br />
-                    <label htmlFor={`rounds-${event}`}>Broj rundi</label>
-                    <select
-                        id={`rounds-${event}`}
-                        disabled={!selectedEvents[event]?.selected}
-                        value={selectedEvents[event]?.rounds || 1}
-                        onChange={(e) => handleRoundsChange(e, event)}
+                    <label
+                        htmlFor={`event-${index}`}
+                        className={styles.eventLabel}
                     >
-                        {[...Array(5)].map((_, i) => (
-                            <option key={i} value={i + 1}>
-                                {i + 1}
-                            </option>
-                        ))}
-                    </select>
+                        {event}
+                    </label>
+                    <div className={styles.roundsControlGroup}>
+                        <label
+                            htmlFor={`rounds-${event}`}
+                            className={styles.roundsLabel}
+                        >
+                            Broj rundi
+                        </label>
+                        <select
+                            id={`rounds-${event}`}
+                            className={styles.roundsSelect}
+                            disabled={!selectedEvents[event]?.selected}
+                            value={selectedEvents[event]?.rounds || 1}
+                            onChange={(e) => handleRoundsChange(e, event)}
+                        >
+                            {[...Array(5)].map((_, i) => (
+                                <option key={i} value={i + 1}>
+                                    {i + 1}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
             ))}
-        </>
+        </div>
     );
 }
 
@@ -78,7 +92,7 @@ function CompetitionForm({
     closeModal: () => void;
 }) {
     return (
-        <form className={styles["make-comp-form"]} onSubmit={handleSubmit}>
+        <form className={styles["comp-dialog-form"]} onSubmit={handleSubmit}>
             <h2>Izradi natjecanje</h2>
             <label htmlFor="comp-name">Ime natjecanja</label>
             <input
@@ -98,7 +112,6 @@ function CompetitionForm({
                 required
             />
 
-            <label>Eventovi</label>
             <EventSelection
                 selectedEvents={selectedEvents}
                 handleEventChange={handleEventChange}
@@ -108,10 +121,10 @@ function CompetitionForm({
             {isLoading ? (
                 <Loader />
             ) : (
-                <div className={styles["make-comp-form-buttons"]}>
+                <div className={styles["comp-dialog-form-buttons"]}>
                     <button
                         type="submit"
-                        className={styles["make-comp-submit"]}
+                        className={styles["comp-dialog-submit"]}
                     >
                         Napravi
                     </button>
@@ -169,7 +182,6 @@ function CreateCompDialog({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Check if at least one event is selected
         if (Object.values(selectedEvents).every((event) => !event.selected)) {
             alert("Izaberi barem 1 event.");
             return;
@@ -203,7 +215,7 @@ function CreateCompDialog({
 
     return (
         <dialog
-            className={styles["make-comp-modal"]}
+            className={styles["comp-dialog-modal"]}
             ref={dialogRef}
             onClose={closeModal}
         >
