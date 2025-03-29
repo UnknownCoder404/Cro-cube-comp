@@ -26,7 +26,7 @@ function CompetitionSelect({
     show: boolean;
 }) {
     if (!competitions) {
-        return <p>Učitavanje...</p>; // Loading message in case competitions are not available
+        return null;
     }
 
     return (
@@ -65,7 +65,7 @@ function CompResults({
     show: boolean;
 }) {
     if (!selectedCompetition) {
-        return <></>;
+        return null;
     }
 
     const compDate = new Date(selectedCompetition.date);

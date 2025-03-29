@@ -15,6 +15,7 @@ import {
 } from "@/app/Types/solve";
 import { clsx } from "clsx";
 import DeleteSvg from "../Svg/delete";
+import posthog from "posthog-js";
 
 function DeleteSolveButton({
     competitionId,
@@ -37,24 +38,54 @@ function DeleteSolveButton({
     const [loading, setLoading] = useState(false);
 
     const deleteThisSolve = async () => {
-        setLoading(true);
-        const solveDeletion = await deleteSolve({
-            userId,
-            competitionId,
-            eventName: event,
-            roundIndex: roundNumber - 1,
-            solveIndex: solveNumber - 1,
-        });
-        setLoading(false);
+        try {
+            setLoading(true);
+            const solveDeletion = await deleteSolve({
+                userId,
+                competitionId,
+                eventName: event,
+                roundIndex: roundNumber - 1,
+                solveIndex: solveNumber - 1,
+            });
 
-        if (!solveDeletion.success) {
-            return alert(
-                (solveDeletion.data && solveDeletion.data.message) ||
-                    "Greška pri brisanju slaganja.",
-            );
+            if (!solveDeletion.success) {
+                posthog.capture("solve_deleted_failure", {
+                    competitionId,
+                    eventName: event,
+                    roundNumber,
+                    solveNumber,
+                    userId,
+                    errorMessage:
+                        (solveDeletion.data && solveDeletion.data.message) ||
+                        "Greška pri brisanju slaganja.",
+                });
+                return alert(
+                    (solveDeletion.data && solveDeletion.data.message) ||
+                        "Greška pri brisanju slaganja.",
+                );
+            }
+
+            posthog.capture("solve_deleted_success", {
+                competitionId,
+                eventName: event,
+                roundNumber,
+                solveNumber,
+                userId,
+            });
+            router.refresh();
+        } catch (error) {
+            posthog.capture("solve_deleted_failure", {
+                competitionId,
+                eventName: event,
+                roundNumber,
+                solveNumber,
+                userId,
+                error: error,
+            });
+            alert("Greška pri brisanju slaganja: " + error);
+        } finally {
+            setLoading(false);
         }
-
-        router.refresh();
     };
 
     return (
@@ -95,40 +126,69 @@ function AddSolveInputAndButton({
         setInputValue(event.target.value);
 
     const addSolveToUser = async () => {
-        if (!inputValue.trim()) return;
+        try {
+            if (!inputValue.trim()) return;
 
-        const solves = inputValue
-            .split(" ")
-            .map((solve) => formatInputToSeconds(solve))
-            .filter(
-                (solve): solve is number =>
-                    solve !== null && solve !== undefined,
-            );
+            const solves = inputValue
+                .split(" ")
+                .map((solve) => formatInputToSeconds(solve))
+                .filter(
+                    (solve): solve is number =>
+                        solve !== null && solve !== undefined,
+                );
 
-        if (!solves.length) return;
+            if (!solves.length) return;
 
-        setLoading(true);
-        const response = await addSolve({
-            userId: userId,
-            competitionId,
-            event: eventName,
-            roundIndex: roundNumber - 1,
-            solves,
-        });
-        setLoading(false);
+            setLoading(true);
+            const response = await addSolve({
+                userId: userId,
+                competitionId,
+                event: eventName,
+                roundIndex: roundNumber - 1,
+                solves,
+            });
 
-        if (!response.success) {
-            alert(
-                (response.data && response.data.message) ||
-                    "Greška prilikom dodavanja slaganja.",
-            );
-            return;
+            if (!response.success) {
+                posthog.capture("solve_added_failure", {
+                    competitionId,
+                    eventName,
+                    roundNumber,
+                    solvesCount: solves.length,
+                    userId,
+                    errorMessage:
+                        (response.data && response.data.message) ||
+                        "Greška prilikom dodavanja slaganja.",
+                });
+                alert(
+                    (response.data && response.data.message) ||
+                        "Greška prilikom dodavanja slaganja.",
+                );
+                return;
+            }
+
+            posthog.capture("solve_added_success", {
+                competitionId,
+                eventName,
+                roundNumber,
+                solvesCount: solves.length,
+                userId,
+            });
+            setInputValue("");
+            router.refresh();
+
+            setTimeout(() => inputRef.current?.focus(), 0);
+        } catch (error) {
+            posthog.capture("solve_added_failure", {
+                competitionId,
+                eventName,
+                roundNumber,
+                userId,
+                error: error,
+            });
+            alert("Greška prilikom dodavanja slaganja: " + error);
+        } finally {
+            setLoading(false);
         }
-
-        setInputValue("");
-        router.refresh();
-
-        setTimeout(() => inputRef.current?.focus(), 0);
     };
 
     return (
