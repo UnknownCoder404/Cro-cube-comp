@@ -42,7 +42,7 @@ export async function deletePost(id: string): Promise<{
 }> {
     try {
         const postsUrl = new URL(url);
-        postsUrl.pathname = `/posts/delete/${id}`;
+        postsUrl.pathname = `/posts/${id}`;
         const response = await withTimeout(
             fetch(postsUrl, {
                 method: "DELETE",
@@ -84,7 +84,7 @@ export async function createPost(
 
     try {
         const createPostUrl = new URL(url);
-        createPostUrl.pathname = "/posts/new";
+        createPostUrl.pathname = "/posts";
 
         const response = await withTimeout(
             fetch(createPostUrl, {
@@ -130,7 +130,7 @@ export async function editPost(
         throw new Error("New title, description, and ID are required.");
     }
     const editPostUrl = new URL(url);
-    editPostUrl.pathname = `/posts/edit/${id}`;
+    editPostUrl.pathname = `/posts/${id}`;
     try {
         const response = await withTimeout(
             fetch(editPostUrl, {
