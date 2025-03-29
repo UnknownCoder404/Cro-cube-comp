@@ -1,6 +1,6 @@
 This app is called Cro Cube Comp, it's used for hosting competitions in solving Rubiks cubes. This is the frontend of that app.
 
-The app code is written in English (for example variables), however the text that is provided to the user **has** to be in Croatian language.
+The app code is written in English (for example variables), however the text that is provided to the user on the website **has** to be in Croatian language.
 
 We are using latest version of Next.js and css modules for styling.
 
