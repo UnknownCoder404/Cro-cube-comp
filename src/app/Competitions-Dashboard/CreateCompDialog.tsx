@@ -5,6 +5,7 @@ import styles from "./CompetitionDashboard.module.css";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Loader } from "../components/Loader/Loader";
 import { format, parseISO } from "date-fns";
+import posthog from "posthog-js";
 
 const events = ["3x3", "3x3oh", "4x4", "2x2", "3x3bld", "megaminx", "teambld"];
 
@@ -86,6 +87,8 @@ function CompetitionForm({
                 id="comp-name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                minLength={5}
+                maxLength={35}
                 required
             />
 
@@ -95,6 +98,16 @@ function CompetitionForm({
                 id="comp-date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
+                min={new Date(
+                    new Date().setFullYear(new Date().getFullYear() - 3),
+                )
+                    .toISOString()
+                    .slice(0, 16)}
+                max={new Date(
+                    new Date().setFullYear(new Date().getFullYear() + 3),
+                )
+                    .toISOString()
+                    .slice(0, 16)}
                 required
             />
 
@@ -191,9 +204,21 @@ function CreateCompDialog({
             );
             if (!success) throw new Error("Failed to create competition");
 
+            posthog.capture("competition_creation_successful", {
+                name,
+                date: utcDateString,
+                events: selectedEventList.map((event) => event.name),
+            });
+
             closeModal();
             router.refresh();
         } catch (error) {
+            posthog.capture("competition_creation_fail", {
+                name,
+                date: utcDateString,
+                events: selectedEventList.map((event) => event.name),
+                error,
+            });
             console.error("Error creating competition:", error);
             alert("Dogodila se greška pri stvaranju natjecanja.");
         } finally {
