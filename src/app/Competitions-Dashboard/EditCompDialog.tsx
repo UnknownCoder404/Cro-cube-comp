@@ -6,7 +6,8 @@ import { format } from "date-fns";
 import { CompetitionType } from "../Types/solve";
 import { Loader } from "../components/Loader/Loader";
 import { editCompetition } from "../utils/competitions";
-import styles from "./CompetitionDashboard.module.css";
+import styles from "./CompDialog.module.css";
+import posthog from "posthog-js";
 
 // Constants
 const EVENTS = [
@@ -59,24 +60,32 @@ const EventSelection = ({
     onEventChange,
     onRoundsChange,
 }: EventSelectionProps) => (
-    <div className={styles["events-grid"]}>
+    <div className={styles.eventSelectionContainer}>
+        <label className={styles.mainEventLabel}>Eventovi</label>
         {EVENTS.map((event) => (
-            <div key={event} className={styles["event-item"]}>
-                <div className={styles["event-checkbox"]}>
-                    <input
-                        type="checkbox"
-                        id={`event-${event}`}
-                        name={event}
-                        onChange={(e) => onEventChange(event, e.target.checked)}
-                        checked={selectedEvents[event]?.selected || false}
-                    />
-                    <label htmlFor={`event-${event}`}>{event}</label>
-                </div>
+            <div key={event} className={styles.eventItem}>
+                <input
+                    type="checkbox"
+                    id={`event-${event}`}
+                    name={event}
+                    onChange={(e) => onEventChange(event, e.target.checked)}
+                    checked={selectedEvents[event]?.selected || false}
+                    className={styles.checkbox}
+                />
+                <label htmlFor={`event-${event}`} className={styles.eventLabel}>
+                    {event}
+                </label>
 
-                <div className={styles["rounds-select"]}>
-                    <label htmlFor={`rounds-${event}`}>Broj rundi</label>
+                <div className={styles.roundsControlGroup}>
+                    <label
+                        htmlFor={`rounds-${event}`}
+                        className={styles.roundsLabel}
+                    >
+                        Broj rundi
+                    </label>
                     <select
                         id={`rounds-${event}`}
+                        className={styles.roundsSelect}
                         disabled={!selectedEvents[event]?.selected}
                         value={selectedEvents[event]?.rounds || 1}
                         onChange={(e) =>
@@ -142,9 +151,22 @@ const CompetitionForm = ({
                 throw new Error("Greška prilikom izmjene");
             }
 
+            posthog.capture("competition_edit_successful", {
+                id: competition._id,
+                name,
+                date: utcDate,
+                events: eventsList.map((event) => event.name),
+            });
+
             router.refresh();
             closeModal();
         } catch (error) {
+            posthog.capture("competition_edit_fail", {
+                id: competition._id,
+                name,
+                date,
+                error,
+            });
             console.error("Error editing competition:", error);
             alert("Dogodila se greška prilikom izmjene natjecanja");
         } finally {
@@ -170,7 +192,7 @@ const CompetitionForm = ({
     };
 
     return (
-        <form className={styles["make-comp-form"]} onSubmit={handleSubmit}>
+        <form className={styles["comp-dialog-form"]} onSubmit={handleSubmit}>
             <h2>Uredi natjecanje</h2>
 
             <div className={styles["form-group"]}>
@@ -196,7 +218,6 @@ const CompetitionForm = ({
             </div>
 
             <div className={styles["form-group"]}>
-                <label>Eventovi</label>
                 <EventSelection
                     selectedEvents={selectedEvents}
                     onEventChange={handleEventChange}
@@ -204,14 +225,14 @@ const CompetitionForm = ({
                 />
             </div>
 
-            <div className={styles["make-comp-form-buttons"]}>
+            <div className={styles["comp-dialog-form-buttons"]}>
                 {isLoading ? (
                     <Loader />
                 ) : (
                     <>
                         <button
                             type="submit"
-                            className={styles["make-comp-submit"]}
+                            className={styles["comp-dialog-submit"]}
                         >
                             Uredi
                         </button>
@@ -247,13 +268,10 @@ const EditCompDialog = ({
     const [selectedEvents, setSelectedEvents] = useState<
         Record<EventName, EventState>
     >(() => {
-        const initialEvents = EVENTS.reduce(
-            (acc, event) => {
-                acc[event] = { selected: false, rounds: 1 };
-                return acc;
-            },
-            {} as Record<EventName, EventState>,
-        );
+        const initialEvents = EVENTS.reduce((acc, event) => {
+            acc[event] = { selected: false, rounds: 1 };
+            return acc;
+        }, {} as Record<EventName, EventState>);
 
         competition.events.forEach((event) => {
             if (event.name in initialEvents) {
@@ -273,10 +291,22 @@ const EditCompDialog = ({
 
         if (show) dialog.showModal();
         else dialog.close();
-    }, [show]);
+
+        // Handle dialog close event (including ESC key press)
+        const handleDialogClose = () => {
+            setVisibilityAction(false);
+        };
+
+        dialog.addEventListener("close", handleDialogClose);
+
+        // Cleanup function
+        return () => {
+            dialog.removeEventListener("close", handleDialogClose);
+        };
+    }, [show, setVisibilityAction]);
 
     return (
-        <dialog ref={dialogRef}>
+        <dialog ref={dialogRef} className={styles["comp-dialog-modal"]}>
             <CompetitionForm
                 competition={competition}
                 name={name}

@@ -1,0 +1,314 @@
+/* Create comp button is not a part of dialog, but it's connected */
+.create-comp-btn {
+    background-color: rgb(0 98 255);
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 4px 8px;
+    margin: 0.5rem;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: transform 0.3s var(--exponential), background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+/* Dialog container */
+.comp-dialog-modal {
+    border-radius: 8px;
+    border: 1px solid rgb(87 86 86 / 70%);
+    padding: 25px 30px;
+    background-color: #3a3a3a;
+    color: white;
+    box-shadow: 0 5px 15px rgb(0 0 0 / 30%);
+    max-width: 500px;
+    width: 90vw;
+    margin: auto;
+    font-family: inherit;
+}
+
+.comp-dialog-modal[open] {
+    display: grid;
+}
+
+/* Form elements */
+.comp-dialog-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.comp-dialog-form h2 {
+    text-align: center;
+    color: white;
+    margin: 0 0 15px 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.comp-dialog-form
+    > label:not(.mainEventLabel):not(.eventLabel):not(.roundsLabel) {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #e0e0e0;
+}
+
+/* Inputs */
+.comp-dialog-form input[type="text"],
+.comp-dialog-form input[type="datetime-local"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #505050;
+    color: white;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.comp-dialog-form input[type="text"]:focus,
+.comp-dialog-form input[type="datetime-local"]:focus {
+    border-color: var(--default-button-background-color);
+    box-shadow: 0 0 8px var(--default-button-shadow-color);
+    outline: none;
+}
+
+/* Event selection */
+.eventSelectionContainer {
+    margin-top: 5px;
+    border: 1px solid #555;
+    padding: 15px;
+    border-radius: 4px;
+    background-color: #4a4a4a;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.mainEventLabel {
+    font-weight: bold;
+    color: #e0e0e0;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.eventItem {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 10px 15px;
+    padding: 3px 0;
+}
+
+.checkbox {
+    margin: 0;
+    accent-color: var(--default-button-background-color);
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+
+.eventLabel {
+    cursor: pointer;
+    color: white;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.roundsControlGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.roundsLabel {
+    font-size: 0.9em;
+    color: #ccc;
+    white-space: nowrap;
+}
+
+.roundsSelect {
+    min-width: 65px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background-color: #f9f9f9;
+    color: black;
+    font-size: 0.9rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.roundsSelect:focus {
+    border-color: var(--default-button-background-color);
+    box-shadow: 0 0 8px var(--default-button-shadow-color);
+    outline: none;
+}
+
+.roundsSelect:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Buttons */
+.comp-dialog-form-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.comp-dialog-form-buttons button {
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s, box-shadow 0.3s,
+        transform 0.2s var(--exponential);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40px;
+}
+
+.comp-dialog-form-buttons button:focus {
+    outline: none;
+}
+
+.comp-dialog-submit {
+    background-color: var(--default-button-background-color);
+    color: white;
+}
+
+.comp-dialog-submit:hover:not(:disabled) {
+    background-color: var(--default-button-hover-background-color);
+    box-shadow: 0 0 8px var(--default-button-shadow-color);
+    transform: scale(1.03);
+}
+
+.comp-dialog-submit:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.comp-dialog-submit:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.comp-dialog-form-buttons button:not(.comp-dialog-submit) {
+    background-color: #6c757d;
+    color: white;
+}
+
+.comp-dialog-form-buttons button:not(.comp-dialog-submit):hover {
+    background-color: #5a6268;
+    transform: scale(1.03);
+}
+
+.comp-dialog-form-buttons button:not(.comp-dialog-submit):active {
+    transform: scale(1.03);
+}
+
+/* Loader */
+.loaderContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.comp-dialog-form-buttons button > .loaderContainer > div,
+.comp-dialog-form-buttons button > div.loader {
+    width: 25px !important;
+    height: 25px !important;
+}
+
+.comp-dialog-form-buttons button .loader::before {
+    border-color: white white transparent transparent !important;
+}
+
+.comp-dialog-form-buttons button .loader::after {
+    border-color: transparent transparent white white !important;
+}
+
+.comp-dialog-form-buttons button .loader::before,
+.comp-dialog-form-buttons button .loader::after {
+    border-width: 4px !important;
+}
+
+/* Responsive */
+@media screen and (max-width: 350px) {
+    .comp-dialog-modal {
+        padding: 20px 15px;
+        max-width: 95vw;
+    }
+    .comp-dialog-form {
+        gap: 15px;
+    }
+    .comp-dialog-form h2 {
+        font-size: 1.3rem;
+    }
+    .comp-dialog-form input[type="text"],
+    .comp-dialog-form input[type="datetime-local"] {
+        padding: 8px 10px;
+        font-size: 0.95rem;
+    }
+    .eventSelectionContainer {
+        padding: 10px;
+    }
+    .eventItem {
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+        row-gap: 8px;
+        column-gap: 8px;
+        padding: 8px 0;
+    }
+    .eventItem .checkbox {
+        grid-row: 1 / 2;
+        grid-column: 1 / 2;
+        align-self: center;
+    }
+    .eventItem .eventLabel {
+        grid-row: 1 / 2;
+        grid-column: 2 / 3;
+        align-self: center;
+        font-size: 0.95rem;
+    }
+    .eventItem .roundsControlGroup {
+        grid-row: 2 / 3;
+        grid-column: 1 / 3;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 5px;
+    }
+    .roundsLabel {
+        font-size: 0.85em;
+    }
+    .roundsSelect {
+        padding: 4px 6px;
+        font-size: 0.85rem;
+        min-width: 60px;
+    }
+    .comp-dialog-form-buttons button {
+        padding: 8px 10px;
+        font-size: 0.95rem;
+        min-height: 38px;
+    }
+    .comp-dialog-form-buttons button > .loaderContainer > div,
+    .comp-dialog-form-buttons button > div.loader {
+        width: 22px !important;
+        height: 22px !important;
+    }
+    .comp-dialog-form-buttons button .loader::before,
+    .comp-dialog-form-buttons button .loader::after {
+        border-width: 3px !important;
+    }
+}
