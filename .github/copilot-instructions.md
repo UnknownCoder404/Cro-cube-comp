@@ -10,4 +10,9 @@ We use tabwidth of 4 spaces.
 
 As a package manager, we are using pnpm.
 
+If you are adding a new feature, always try to add event captures from posthog wherever it makes sense.
+When implementing event captures for posthog always try to split it into 2 cases: success and failure.
+Provide the data that makes sense to the events.
+Use `posthog.capture()` syntax.
+
 The server is located on "https://api.crocubecomp.com/" while this app is located on "https://www.crocubecomp.com/"
