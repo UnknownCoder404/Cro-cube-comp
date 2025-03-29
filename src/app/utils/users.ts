@@ -79,7 +79,7 @@ export async function assignAdminToUser({
 }: AssignAdminToUserParams): Promise<ApiResponse<{ message?: string }>> {
     try {
         const adminAssignmentUrl = new URL(url);
-        adminAssignmentUrl.pathname = `admin/assign/${id}`;
+        adminAssignmentUrl.pathname = `users/${id}/actions/toggle-admin`;
         const response = await fetch(adminAssignmentUrl, {
             method: "POST",
             headers: {},
@@ -110,7 +110,7 @@ export async function addSolve({
 }: AddSolveParams): Promise<ApiResponse<{ message?: string }>> {
     try {
         const solvesUrl = new URL(url);
-        solvesUrl.pathname = `solves/add/${userId}`;
+        solvesUrl.pathname = `solves/${userId}`;
         const response = await fetch(solvesUrl, {
             method: "POST",
             headers: {
@@ -148,7 +148,7 @@ export async function deleteSolve({
 }: DeleteSolveParams): Promise<ApiResponse<{ message?: string }>> {
     try {
         const solvesUrl = new URL(url);
-        solvesUrl.pathname = `solves/delete/${userId}`;
+        solvesUrl.pathname = `solves/${userId}`;
         const response = await fetch(solvesUrl, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
@@ -243,7 +243,7 @@ export async function registerUser({
 > {
     try {
         const registerUrl = new URL(url);
-        registerUrl.pathname = "register";
+        registerUrl.pathname = "users/register";
         const response = await fetch(registerUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
