@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { Loader } from "../components/Loader/Loader";
 import EditSvg from "../components/Svg/edit";
 import DeleteSvg from "../components/Svg/delete";
+import posthog from "posthog-js";
 
 type Props = {
     posts: Posts;
@@ -50,11 +51,27 @@ function EditPostModal({
         try {
             const { success } = await editPost(post.id, title, description);
             onClose();
-            if (success) router.refresh();
+
+            if (success) {
+                router.refresh();
+                posthog.capture("post_edit_successful", {
+                    post_id: post.id,
+                    post_title: title,
+                    post_description: description,
+                });
+            }
         } catch (e) {
             const message = isErrorWithMessage(e)
                 ? e.message
                 : "Greška pri uređivanju objave.";
+            posthog.capture("post_edit_failed", {
+                post_id: post.id,
+                new_title: title,
+                new_description: description,
+                old_title: post.title,
+                old_description: post.description,
+                error: message,
+            });
             alert(message);
         } finally {
             setIsLoading(false);
@@ -90,14 +107,39 @@ function PostButtons({ post }: { post: PostType }) {
     const router = useRouter();
 
     const handleDelete = async () => {
-        const { success, parsed } = await deletePost(post.id);
-        if (!success)
-            alert(
-                isErrorWithMessage(parsed)
+        try {
+            const { success, parsed } = await deletePost(post.id);
+            if (success) {
+                router.refresh();
+                posthog.capture("post_delete_successful", {
+                    post_id: post.id,
+                    post_title: post.title,
+                    post_description: post.description,
+                });
+            } else {
+                const errorMessage = isErrorWithMessage(parsed)
                     ? parsed.message
-                    : "Error deleting post.",
-            );
-        router.refresh();
+                    : "Greška pri brisanju objave.";
+                posthog.capture("post_delete_failed", {
+                    post_id: post.id,
+                    post_title: post.title,
+                    post_description: post.description,
+                    error: errorMessage,
+                });
+                alert(errorMessage);
+            }
+        } catch (e) {
+            const message = isErrorWithMessage(e)
+                ? e.message
+                : "Greška pri brisanju objave.";
+            posthog.capture("post_delete_failed", {
+                post_id: post.id,
+                post_title: post.title,
+                post_description: post.description,
+                error: message,
+            });
+            alert(message);
+        }
     };
 
     const toggleEditModal = () => setShowEditModal((prev) => !prev);

@@ -6,6 +6,7 @@ import { Loader } from "../Loader/Loader";
 import { markdownToHtml } from "@/app/utils/markdown";
 import { clsx } from "clsx";
 import { isErrorWithMessage } from "@/app/utils/helpers/isErrorWIthMessage";
+import posthog from "posthog-js";
 
 type Props = {
     title: string;
@@ -31,15 +32,28 @@ export default function UploadPostButton({
                 router.refresh();
                 setTitle("");
                 setDescription("");
+                posthog.capture("post_creation_success", {
+                    title,
+                    descriptionAsHtml,
+                });
             } else {
-                alert(
-                    isErrorWithMessage(postCreation.parsed)
-                        ? postCreation.parsed.message
-                        : "Greška prilikom izrade objave.",
-                );
+                const errorMsg = isErrorWithMessage(postCreation.parsed)
+                    ? postCreation.parsed.message
+                    : "Greška prilikom izrade objave.";
+                posthog.capture("post_creation_failure", {
+                    title,
+                    error: errorMsg,
+                });
+                alert(errorMsg);
             }
         } catch (error) {
             console.error("Error creating post:", error);
+            posthog.capture("create_post_failure", {
+                title,
+                error:
+                    error instanceof Error ? error.message : "Nepoznata greška",
+                description,
+            });
             alert("Dogodila se greška prilikom izrade objave.");
         } finally {
             setIsLoading(false);
