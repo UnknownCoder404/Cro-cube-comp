@@ -4,8 +4,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { clsx } from "clsx";
-import { posthog } from "posthog-js"; // Import PostHog
-
+import { posthog } from "posthog-js";
 import styles from "./Login.module.css";
 import { url } from "@/globals";
 import { Loader } from "../components/Loader/Loader";
@@ -99,6 +98,11 @@ async function handleSubmit(
         }
 
         const { id, username: responseUsername, role } = data.info;
+
+        posthog.identify(id, {
+            role,
+            username,
+        });
 
         // Login and redirect
         login(responseUsername, role, id);

@@ -3,6 +3,7 @@
 import { url } from "@/globals";
 import { Role } from "../utils/credentials";
 import { createContext, useContext, useEffect, useState } from "react";
+import posthog from "posthog-js";
 
 export type AuthContextType = {
     username: string | null;
@@ -42,6 +43,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     const logOut = () => {
+        // Capture logout event before resetting
+        posthog.capture("user_logged_out", {
+            username,
+            role,
+            userId,
+        });
+        posthog.reset();
+
         localStorage.removeItem("username");
         localStorage.removeItem("role");
         localStorage.removeItem("id");
