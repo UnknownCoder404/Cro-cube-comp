@@ -1,4 +1,5 @@
-import { AllowedEvents, CompetitionResultType } from "../Types/solve";
+import { CompetitionResultType } from "../Types/solve";
+import { EventCode } from "../utils/eventMappings";
 import CompetitionEvent from "./CompetitionEvent";
 import competitionStyles from "./Competitions.module.css";
 
@@ -35,9 +36,7 @@ export default async function Competition(props: {
 }) {
     const { competition, competitionName } = props;
     const competitionDateString = competition.date;
-    const competitionEvents = Object.keys(
-        competition.events,
-    ) as AllowedEvents[];
+    const competitionEvents = Object.keys(competition.events) as EventCode[];
 
     return (
         <div className={competitionStyles["comp-info"]}>

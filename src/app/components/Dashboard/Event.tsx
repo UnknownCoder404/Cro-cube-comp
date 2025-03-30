@@ -7,14 +7,10 @@ import {
 import { useRef, useState } from "react";
 import { addSolve, deleteSolve } from "@/app/utils/users";
 import { useRouter } from "next/navigation";
-import {
-    AllowedEvents,
-    EventDetail,
-    UserComp,
-    UserEvent,
-} from "@/app/Types/solve";
+import { EventDetail, UserComp, UserEvent } from "@/app/Types/solve";
 import { clsx } from "clsx";
 import DeleteSvg from "../Svg/delete";
+import { EventCode } from "@/app/utils/eventMappings";
 
 function DeleteSolveButton({
     competitionId,
@@ -26,7 +22,7 @@ function DeleteSolveButton({
     show,
 }: {
     competitionId: string;
-    event: AllowedEvents;
+    event: EventCode;
     roundNumber: number;
     solveNumber: number;
     userId: string;
@@ -171,7 +167,7 @@ function Solve({
 }: {
     solve: number;
     competitionId: string;
-    eventName: AllowedEvents;
+    eventName: EventCode;
     roundNumber: number;
     userId: string;
     solveNumber: number;
@@ -206,7 +202,7 @@ function Round({
     roundNumber: number;
     round: number[] | undefined;
     competitionId: string;
-    eventName: AllowedEvents;
+    eventName: EventCode;
     userId: string;
     isLocked: boolean;
     show: boolean;

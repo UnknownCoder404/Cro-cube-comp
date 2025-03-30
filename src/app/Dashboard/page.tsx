@@ -6,8 +6,7 @@ import { getCompetitions } from "../utils/competitions";
 import { Metadata } from "next";
 import ProtectedRoute from "../components/Common/ProtectedRoute";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0; // Ensure no caching between requests
+export const revalidate = 0; // Ensure no caching on fetch requests
 
 export const metadata: Metadata = {
     title: "Radna ploča - Cro Cube Comp",

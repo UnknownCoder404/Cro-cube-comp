@@ -1,9 +1,8 @@
 import { Role } from "../utils/credentials";
-
-export type AllowedEvents = "3x3" | "4x4" | "3x3oh" | "2x2";
+import { EventCode } from "../utils/eventMappings";
 
 export type UserEvent = {
-    event: AllowedEvents;
+    event: EventCode;
     rounds: number[][];
 };
 
@@ -24,7 +23,7 @@ export type User = {
 export type Users = User[];
 
 export type EventDetail = {
-    name: AllowedEvents;
+    name: EventCode;
     rounds: number;
 };
 export type CompetitionType = {
@@ -38,7 +37,7 @@ export type CompetitionResultType = {
     date: string;
     isLocked: boolean;
     events: {
-        [key in AllowedEvents]: Result[][];
+        [key in EventCode]: Result[][];
     };
 };
 export type CompetitionResultsType = {

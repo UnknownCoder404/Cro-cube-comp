@@ -2,25 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
+import { format, addYears, subYears } from "date-fns";
 import { CompetitionType } from "../Types/solve";
 import { Loader } from "../components/Loader/Loader";
 import { editCompetition } from "../utils/competitions";
 import styles from "./CompDialog.module.css";
-
-// Constants
-const EVENTS = [
-    "3x3",
-    "3x3oh",
-    "4x4",
-    "2x2",
-    "3x3bld",
-    "megaminx",
-    "teambld",
-] as const;
-type EventName = (typeof EVENTS)[number];
+import { EVENT_CODES, EventCode, getDisplayName } from "../utils/eventMappings";
 
 // Types
+type EventName = EventCode;
+
 interface EventState {
     selected: boolean;
     rounds: number;
@@ -59,36 +50,42 @@ const EventSelection = ({
     onEventChange,
     onRoundsChange,
 }: EventSelectionProps) => (
-    <div className={styles.eventSelectionContainer}>
-        <label className={styles.mainEventLabel}>Eventovi</label>
-        {EVENTS.map((event) => (
-            <div key={event} className={styles.eventItem}>
+    <div className={styles["event-selection-container"]}>
+        <label className={styles["main-event-label"]}>Eventovi</label>
+        {EVENT_CODES.map((eventCode) => (
+            <div key={eventCode} className={styles["event-item"]}>
                 <input
                     type="checkbox"
-                    id={`event-${event}`}
-                    name={event}
-                    onChange={(e) => onEventChange(event, e.target.checked)}
-                    checked={selectedEvents[event]?.selected || false}
+                    id={`event-${eventCode}`}
+                    name={eventCode}
+                    onChange={(e) => onEventChange(eventCode, e.target.checked)}
+                    checked={selectedEvents[eventCode]?.selected || false}
                     className={styles.checkbox}
                 />
-                <label htmlFor={`event-${event}`} className={styles.eventLabel}>
-                    {event}
+                <label
+                    htmlFor={`event-${eventCode}`}
+                    className={styles["event-label"]}
+                >
+                    {getDisplayName(eventCode)}
                 </label>
 
-                <div className={styles.roundsControlGroup}>
+                <div className={styles["rounds-control-group"]}>
                     <label
-                        htmlFor={`rounds-${event}`}
-                        className={styles.roundsLabel}
+                        htmlFor={`rounds-${eventCode}`}
+                        className={styles["rounds-label"]}
                     >
                         Broj rundi
                     </label>
                     <select
-                        id={`rounds-${event}`}
-                        className={styles.roundsSelect}
-                        disabled={!selectedEvents[event]?.selected}
-                        value={selectedEvents[event]?.rounds || 1}
+                        id={`rounds-${eventCode}`}
+                        className={styles["rounds-select"]}
+                        disabled={!selectedEvents[eventCode]?.selected}
+                        value={selectedEvents[eventCode]?.rounds || 1}
                         onChange={(e) =>
-                            onRoundsChange(event, parseInt(e.target.value, 10))
+                            onRoundsChange(
+                                eventCode,
+                                parseInt(e.target.value, 10),
+                            )
                         }
                     >
                         {Array.from({ length: 5 }, (_, i) => (
@@ -116,6 +113,11 @@ const CompetitionForm = ({
     closeModal,
 }: CompetitionFormProps) => {
     const router = useRouter();
+
+    // Calculate min and max dates (±3 years from current date)
+    const now = new Date();
+    const minDate = format(subYears(now, 3), "yyyy-MM-dd'T'HH:mm");
+    const maxDate = format(addYears(now, 3), "yyyy-MM-dd'T'HH:mm");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -199,6 +201,8 @@ const CompetitionForm = ({
                     id="comp-date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
+                    min={minDate}
+                    max={maxDate}
                     required
                 />
             </div>
@@ -254,7 +258,7 @@ const EditCompDialog = ({
     const [selectedEvents, setSelectedEvents] = useState<
         Record<EventName, EventState>
     >(() => {
-        const initialEvents = EVENTS.reduce(
+        const initialEvents = EVENT_CODES.reduce(
             (acc, event) => {
                 acc[event] = { selected: false, rounds: 1 };
                 return acc;

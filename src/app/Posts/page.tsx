@@ -9,8 +9,7 @@ export const metadata: Metadata = {
     keywords: ["Upravljanje objavama", "Cro Cube Comp"],
 };
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 0; // Ensure no caching on fetch requests
 
 export default async function Posts() {
     const fetchedPosts = await getPosts();

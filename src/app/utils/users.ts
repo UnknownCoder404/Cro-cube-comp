@@ -1,6 +1,7 @@
 import { url } from "@/globals";
 import { getId } from "./credentials";
-import { AllowedEvents, Users } from "../Types/solve";
+import { Users } from "../Types/solve";
+import { EventCode } from "./eventMappings";
 
 type ApiResponse<T> = {
     success: boolean;
@@ -21,7 +22,7 @@ type AddSolveParams = {
 type DeleteSolveParams = {
     userId: string;
     competitionId: string;
-    eventName: AllowedEvents;
+    eventName: EventCode;
     roundIndex: number;
     solveIndex: number;
 };

@@ -1,5 +1,6 @@
 import { Posts, Post as PostType } from "../Types/posts";
 import styles from "./Posts.module.css";
+import editStyles from "./EditPostDialog.module.css";
 import { deletePost, editPost } from "../utils/posts";
 import { isErrorWithMessage } from "../utils/helpers/isErrorWIthMessage";
 import { useRouter } from "next/navigation";
@@ -62,24 +63,36 @@ function EditPostModal({
     };
 
     return (
-        <dialog ref={modalRef} className={styles["edit-post-dialog"]}>
-            <form onSubmit={handleEdit} className={styles["edit-post-form"]}>
+        <dialog ref={modalRef} className={editStyles["edit-dialog-modal"]}>
+            <form
+                onSubmit={handleEdit}
+                className={editStyles["edit-dialog-form"]}
+            >
+                <h2>Uredi objavu</h2>
                 <input
                     type="text"
                     placeholder="Uredi naslov..."
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className={styles["edit-title-input"]}
+                    className={editStyles["edit-title-input"]}
                 />
                 <textarea
                     placeholder="Uredi opis..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className={styles["edit-description-textarea"]}
+                    className={editStyles["edit-description-textarea"]}
                 />
-                <button type="submit" className={styles["edit-submit-btn"]}>
-                    {isLoading ? <Loader /> : "Uredi objavu"}
-                </button>
+                <div className={editStyles["edit-dialog-buttons"]}>
+                    <button
+                        type="submit"
+                        className={editStyles["edit-submit-btn"]}
+                    >
+                        {isLoading ? <Loader /> : "Uredi objavu"}
+                    </button>
+                    <button type="button" onClick={onClose}>
+                        Odustani
+                    </button>
+                </div>
             </form>
         </dialog>
     );

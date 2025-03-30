@@ -8,9 +8,9 @@ import ProtectedRoute from "../components/Common/ProtectedRoute";
 import CalendarSvg from "../components/Svg/calendar";
 import LockSvg from "../components/Svg/lock";
 import { formatInTimeZone } from "date-fns-tz";
+import { getDisplayName } from "../utils/eventMappings";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 0; // Ensure no caching on fetch requests
 
 const svgFillColor = "#e8eaed";
 
@@ -75,7 +75,8 @@ function CurrentCompetitions({
                         <div className={styles["events-list"]}>
                             {events.map((event, index) => (
                                 <div key={index} className={styles["event"]}>
-                                    {event.name} ({event.rounds})
+                                    {getDisplayName(event.name)} ({event.rounds}
+                                    )
                                 </div>
                             ))}
                         </div>
