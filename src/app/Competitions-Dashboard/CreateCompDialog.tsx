@@ -5,7 +5,7 @@ import styles from "./CompDialog.module.css";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Loader } from "../components/Loader/Loader";
 import { format, parseISO, addYears, subYears } from "date-fns";
-import { EVENT_CODES, EventCode, getDisplayName } from "../utils/eventMappings";
+import { EVENT_CODES, getDisplayName } from "../utils/eventMappings";
 
 function EventSelection({
     selectedEvents,

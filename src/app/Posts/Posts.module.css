@@ -10,17 +10,13 @@
     padding: 10px;
     border-radius: 4px;
     font-size: 16px;
-    transition:
-        border-color 0.3s,
-        box-shadow 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .title {
     width: 50vw;
     height: 5vh;
-    transition:
-        height 0.3s,
-        width 0.3s var(--exponential);
+    transition: height 0.3s, width 0.3s var(--exponential);
 }
 
 .title:focus {
@@ -34,9 +30,7 @@
     max-height: 30vh;
     overflow-y: auto; /* Enable scrolling when max height is reached */
     height: auto; /* Allows the height to adjust based on content */
-    transition:
-        min-height 0.3s,
-        width 0.3s var(--exponential);
+    transition: min-height 0.3s, width 0.3s var(--exponential);
     transition-delay: 0.2s;
 }
 
@@ -64,10 +58,7 @@
     justify-content: center;
     align-items: center;
     height: 45px;
-    transition:
-        background-color 0.3s,
-        box-shadow 0.3s,
-        transform 0.3s,
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s,
         height 0.3s;
 }
 
@@ -138,9 +129,7 @@
     background-color: white;
     border-radius: 2px;
     border: none;
-    transition:
-        border-radius 0.3s var(--exponential),
-        background-color 0.3s;
+    transition: border-radius 0.3s var(--exponential), background-color 0.3s;
 }
 
 .delete-post-btn:hover,
@@ -154,71 +143,4 @@
 
 .edit-post-btn:hover {
     background-color: rgb(87 220 80);
-}
-
-.edit-post-dialog[open] {
-    height: 90dvh; /* Adjusted to 90% of viewport height */
-    width: 90vw; /* Adjusted to 90% of viewport width */
-    max-width: 600px;
-    max-height: 90vh; /* Ensures modal doesn’t overflow on smaller screens */
-    overflow-y: auto; /* Adds scroll if content overflows */
-    border-radius: 3px;
-    border: 2px solid rgb(87 86 86);
-    display: grid;
-    grid-template-columns: 1fr;
-    background-color: #fff;
-    box-shadow: 0 4px 10px rgb(0 0 0 / 10%);
-}
-
-.edit-title-input {
-    outline: 1px solid gray;
-    transition:
-        font-size 0.3s,
-        font-weight 0.3s;
-}
-
-.edit-title-input,
-.edit-description-textarea {
-    width: 90%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-}
-
-.edit-title-input:focus-visible {
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.edit-title-input:not(:focus-visible) {
-    font-size: 24px;
-    font-weight: 700;
-    border: none;
-}
-
-.edit-description-textarea {
-    resize: vertical;
-    height: 100px;
-    max-height: calc(
-        90vh - 200px
-    ); /* Limits textarea height to avoid overflow */
-}
-
-.edit-submit-btn {
-    width: 100%;
-    padding: 10px;
-    background-color: #28a745;
-    color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 15px;
-}
-
-.edit-submit-btn:hover {
-    background-color: #218838;
 }
