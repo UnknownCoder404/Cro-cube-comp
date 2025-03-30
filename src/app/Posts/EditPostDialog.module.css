@@ -29,7 +29,7 @@
 .edit-dialog-form h2 {
     text-align: center;
     color: white;
-    margin: 0 0 15px 0;
+    margin: 0 0 15px;
     font-size: 1.5rem;
     font-weight: 500;
 }
@@ -45,7 +45,12 @@
     background-color: #505050;
     color: white;
     box-sizing: border-box;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    transition:
+        border-color 0.3s,
+        box-shadow 0.3s;
+    resize: vertical;
+    min-height: 150px;
+    max-height: calc(90vh - 250px);
 }
 
 .edit-title-input:focus,
@@ -53,12 +58,6 @@
     border-color: var(--default-button-background-color);
     box-shadow: 0 0 8px var(--default-button-shadow-color);
     outline: none;
-}
-
-.edit-description-textarea {
-    resize: vertical;
-    min-height: 150px;
-    max-height: calc(90vh - 250px);
 }
 
 /* Buttons */
@@ -77,7 +76,9 @@
     cursor: pointer;
     width: 100%;
     text-align: center;
-    transition: background-color 0.3s, box-shadow 0.3s,
+    transition:
+        background-color 0.3s,
+        box-shadow 0.3s,
         transform 0.2s var(--exponential);
     display: flex;
     justify-content: center;
@@ -94,6 +95,12 @@
     color: white;
 }
 
+.edit-submit-btn:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
 .edit-submit-btn:hover:not(:disabled) {
     background-color: var(--default-button-hover-background-color);
     box-shadow: 0 0 8px var(--default-button-shadow-color);
@@ -102,12 +109,6 @@
 
 .edit-submit-btn:active:not(:disabled) {
     transform: scale(0.98);
-}
-
-.edit-submit-btn:disabled {
-    background-color: #555;
-    cursor: not-allowed;
-    opacity: 0.7;
 }
 
 .edit-dialog-buttons button:not(.edit-submit-btn) {
@@ -125,7 +126,7 @@
 }
 
 /* Loader container */
-.loaderContainer {
+.loader-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -134,7 +135,7 @@
 }
 
 /* Responsive styles */
-@media screen and (max-width: 350px) {
+@media screen and (width <= 350px) {
     .edit-dialog-modal {
         padding: 20px 15px;
         max-width: 95vw;

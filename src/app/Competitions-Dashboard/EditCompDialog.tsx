@@ -50,10 +50,10 @@ const EventSelection = ({
     onEventChange,
     onRoundsChange,
 }: EventSelectionProps) => (
-    <div className={styles.eventSelectionContainer}>
-        <label className={styles.mainEventLabel}>Eventovi</label>
+    <div className={styles["event-selection-container"]}>
+        <label className={styles["main-event-label"]}>Eventovi</label>
         {EVENT_CODES.map((eventCode) => (
-            <div key={eventCode} className={styles.eventItem}>
+            <div key={eventCode} className={styles["event-item"]}>
                 <input
                     type="checkbox"
                     id={`event-${eventCode}`}
@@ -64,21 +64,21 @@ const EventSelection = ({
                 />
                 <label
                     htmlFor={`event-${eventCode}`}
-                    className={styles.eventLabel}
+                    className={styles["event-label"]}
                 >
                     {getDisplayName(eventCode)}
                 </label>
 
-                <div className={styles.roundsControlGroup}>
+                <div className={styles["rounds-control-group"]}>
                     <label
                         htmlFor={`rounds-${eventCode}`}
-                        className={styles.roundsLabel}
+                        className={styles["rounds-label"]}
                     >
                         Broj rundi
                     </label>
                     <select
                         id={`rounds-${eventCode}`}
-                        className={styles.roundsSelect}
+                        className={styles["rounds-select"]}
                         disabled={!selectedEvents[eventCode]?.selected}
                         value={selectedEvents[eventCode]?.rounds || 1}
                         onChange={(e) =>
@@ -258,10 +258,13 @@ const EditCompDialog = ({
     const [selectedEvents, setSelectedEvents] = useState<
         Record<EventName, EventState>
     >(() => {
-        const initialEvents = EVENT_CODES.reduce((acc, event) => {
-            acc[event] = { selected: false, rounds: 1 };
-            return acc;
-        }, {} as Record<EventName, EventState>);
+        const initialEvents = EVENT_CODES.reduce(
+            (acc, event) => {
+                acc[event] = { selected: false, rounds: 1 };
+                return acc;
+            },
+            {} as Record<EventName, EventState>,
+        );
 
         competition.events.forEach((event) => {
             if (event.name in initialEvents) {

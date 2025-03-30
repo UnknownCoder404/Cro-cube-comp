@@ -20,10 +20,10 @@ function EventSelection({
     ) => void;
 }) {
     return (
-        <div className={styles.eventSelectionContainer}>
-            <label className={styles.mainEventLabel}>Eventovi</label>
+        <div className={styles["event-selection-container"]}>
+            <label className={styles["main-event-label"]}>Eventovi</label>
             {EVENT_CODES.map((eventCode, index) => (
-                <div key={index} className={styles.eventItem}>
+                <div key={index} className={styles["event-item"]}>
                     <input
                         type="checkbox"
                         id={`event-${index}`}
@@ -33,20 +33,20 @@ function EventSelection({
                     />
                     <label
                         htmlFor={`event-${index}`}
-                        className={styles.eventLabel}
+                        className={styles["event-label"]}
                     >
                         {getDisplayName(eventCode)}
                     </label>
-                    <div className={styles.roundsControlGroup}>
+                    <div className={styles["rounds-control-group"]}>
                         <label
                             htmlFor={`rounds-${eventCode}`}
-                            className={styles.roundsLabel}
+                            className={styles["rounds-label"]}
                         >
                             Broj rundi
                         </label>
                         <select
                             id={`rounds-${eventCode}`}
-                            className={styles.roundsSelect}
+                            className={styles["rounds-select"]}
                             disabled={!selectedEvents[eventCode]?.selected}
                             value={selectedEvents[eventCode]?.rounds || 1}
                             onChange={(e) => handleRoundsChange(e, eventCode)}
