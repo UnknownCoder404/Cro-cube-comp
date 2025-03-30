@@ -4,9 +4,8 @@ import { createCompetition } from "../utils/competitions";
 import styles from "./CompDialog.module.css";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Loader } from "../components/Loader/Loader";
-import { format, parseISO } from "date-fns";
-
-const events = ["3x3", "3x3oh", "4x4", "2x2", "3x3bld", "megaminx", "teambld"];
+import { format, parseISO, addYears, subYears } from "date-fns";
+import { EVENT_CODES, EventCode, getDisplayName } from "../utils/eventMappings";
 
 function EventSelection({
     selectedEvents,
@@ -23,12 +22,12 @@ function EventSelection({
     return (
         <div className={styles.eventSelectionContainer}>
             <label className={styles.mainEventLabel}>Eventovi</label>
-            {events.map((event, index) => (
+            {EVENT_CODES.map((eventCode, index) => (
                 <div key={index} className={styles.eventItem}>
                     <input
                         type="checkbox"
                         id={`event-${index}`}
-                        name={event}
+                        name={eventCode}
                         onChange={handleEventChange}
                         className={styles.checkbox}
                     />
@@ -36,21 +35,21 @@ function EventSelection({
                         htmlFor={`event-${index}`}
                         className={styles.eventLabel}
                     >
-                        {event}
+                        {getDisplayName(eventCode)}
                     </label>
                     <div className={styles.roundsControlGroup}>
                         <label
-                            htmlFor={`rounds-${event}`}
+                            htmlFor={`rounds-${eventCode}`}
                             className={styles.roundsLabel}
                         >
                             Broj rundi
                         </label>
                         <select
-                            id={`rounds-${event}`}
+                            id={`rounds-${eventCode}`}
                             className={styles.roundsSelect}
-                            disabled={!selectedEvents[event]?.selected}
-                            value={selectedEvents[event]?.rounds || 1}
-                            onChange={(e) => handleRoundsChange(e, event)}
+                            disabled={!selectedEvents[eventCode]?.selected}
+                            value={selectedEvents[eventCode]?.rounds || 1}
+                            onChange={(e) => handleRoundsChange(e, eventCode)}
                         >
                             {[...Array(5)].map((_, i) => (
                                 <option key={i} value={i + 1}>
@@ -91,6 +90,11 @@ function CompetitionForm({
     isLoading: boolean;
     closeModal: () => void;
 }) {
+    // Calculate min and max dates (±3 years from current date)
+    const now = new Date();
+    const minDate = format(subYears(now, 3), "yyyy-MM-dd'T'HH:mm");
+    const maxDate = format(addYears(now, 3), "yyyy-MM-dd'T'HH:mm");
+
     return (
         <form className={styles["comp-dialog-form"]} onSubmit={handleSubmit}>
             <h2>Izradi natjecanje</h2>
@@ -109,6 +113,8 @@ function CompetitionForm({
                 id="comp-date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
+                min={minDate}
+                max={maxDate}
                 required
             />
 
