@@ -122,9 +122,12 @@ function AddSolveInputAndButton({
         }
 
         setInputValue("");
-        router.refresh();
+        // We use this to fix issue #83. Check GitHub for more details.
+        router.replace(window.location.href, { scroll: false });
 
-        setTimeout(() => inputRef.current?.focus(), 0);
+        setTimeout(() => {
+            inputRef.current?.focus();
+        }, 0);
     };
 
     return (

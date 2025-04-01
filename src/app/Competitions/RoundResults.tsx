@@ -1,4 +1,3 @@
-// Client component
 import CompetitionStyles from "./Competitions.module.css";
 import { Result } from "../Types/solve";
 import { formatTime, getAverage } from "../utils/solveTime";

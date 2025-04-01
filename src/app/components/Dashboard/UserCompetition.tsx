@@ -1,4 +1,3 @@
-// Client component
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import dashboardStyles from "@/app/Dashboard/Dashboard.module.css";
@@ -26,7 +25,7 @@ function CompetitionSelect({
     show: boolean;
 }) {
     if (!competitions) {
-        return <p>Učitavanje...</p>; // Loading message in case competitions are not available
+        return null;
     }
 
     return (
@@ -65,7 +64,7 @@ function CompResults({
     show: boolean;
 }) {
     if (!selectedCompetition) {
-        return <></>;
+        return null;
     }
 
     const compDate = new Date(selectedCompetition.date);
@@ -118,23 +117,23 @@ function CompetitionWindow({
     >(undefined);
 
     useEffect(() => {
-        // Retrieve the last selected competition from sessionStorage, if available
         const rememberedCompetitionId = sessionStorage.getItem(
             "selectedCompetitionId",
         );
 
         if (rememberedCompetitionId) {
-            setSelectedCompetition(
-                competitions.find(
-                    (c) => c._id === JSON.parse(rememberedCompetitionId),
-                ) || competitions[0],
-            );
+            const parsedId = JSON.parse(rememberedCompetitionId);
+            const selected =
+                competitions.find((c) => c._id === parsedId) || competitions[0];
+
+            setSelectedCompetition(selected);
             return;
         }
+
         setSelectedCompetition(competitions[0]); // Default to the first competition if none is stored
     }, [competitions]);
 
-    if (!selectedCompetition) return <></>;
+    if (!selectedCompetition) return null;
 
     return (
         <motion.div
