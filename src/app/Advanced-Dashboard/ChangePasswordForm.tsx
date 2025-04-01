@@ -51,6 +51,7 @@ export function ChangePasswordForm({ users }: { users: Users }) {
             className={styles["change-password-form"]}
             onSubmit={handlePasswordChange}
         >
+            <h2>Promjena lozinke</h2>
             <div className={styles["change-password-credentials"]}>
                 <UserSelect
                     users={users}
