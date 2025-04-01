@@ -1,5 +1,4 @@
-// Client component
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import clsx from "clsx";
 import dashboardStyles from "@/app/Dashboard/Dashboard.module.css";
 import Event from "./Event";
@@ -117,7 +116,10 @@ function CompetitionWindow({
         CompetitionType | undefined
     >(undefined);
 
-    useEffect(() => {
+    // Using useLayoutEffect instead of useEffect to ensure that the state is set
+    // before the browser paints. This prevents the page from scrolling to the top
+    // when new solves are added or when the competition list updates.
+    useLayoutEffect(() => {
         // Retrieve the last selected competition from sessionStorage, if available
         const rememberedCompetitionId = sessionStorage.getItem(
             "selectedCompetitionId",

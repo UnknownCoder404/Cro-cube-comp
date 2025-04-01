@@ -1,4 +1,3 @@
-// Client component
 import { motion } from "framer-motion";
 import competitionStyles from "./Competitions.module.css";
 import Round from "./Round";
