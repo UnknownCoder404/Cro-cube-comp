@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserButtons from "../components/Dashboard/UserButtons";
 import dynamic from "next/dynamic";
 import { CompetitionType, User } from "../Types/solve";

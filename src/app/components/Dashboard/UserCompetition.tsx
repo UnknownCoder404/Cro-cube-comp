@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import clsx from "clsx";
 import dashboardStyles from "@/app/Dashboard/Dashboard.module.css";
 import Event from "./Event";
@@ -25,7 +25,7 @@ function CompetitionSelect({
     show: boolean;
 }) {
     if (!competitions) {
-        return <p>Učitavanje...</p>; // Loading message in case competitions are not available
+        return null;
     }
 
     return (
@@ -64,7 +64,7 @@ function CompResults({
     show: boolean;
 }) {
     if (!selectedCompetition) {
-        return <></>;
+        return null;
     }
 
     const compDate = new Date(selectedCompetition.date);
@@ -116,27 +116,24 @@ function CompetitionWindow({
         CompetitionType | undefined
     >(undefined);
 
-    // Using useLayoutEffect instead of useEffect to ensure that the state is set
-    // before the browser paints. This prevents the page from scrolling to the top
-    // when new solves are added or when the competition list updates.
-    useLayoutEffect(() => {
-        // Retrieve the last selected competition from sessionStorage, if available
+    useEffect(() => {
         const rememberedCompetitionId = sessionStorage.getItem(
             "selectedCompetitionId",
         );
 
         if (rememberedCompetitionId) {
-            setSelectedCompetition(
-                competitions.find(
-                    (c) => c._id === JSON.parse(rememberedCompetitionId),
-                ) || competitions[0],
-            );
+            const parsedId = JSON.parse(rememberedCompetitionId);
+            const selected =
+                competitions.find((c) => c._id === parsedId) || competitions[0];
+
+            setSelectedCompetition(selected);
             return;
         }
+
         setSelectedCompetition(competitions[0]); // Default to the first competition if none is stored
     }, [competitions]);
 
-    if (!selectedCompetition) return <></>;
+    if (!selectedCompetition) return null;
 
     return (
         <motion.div

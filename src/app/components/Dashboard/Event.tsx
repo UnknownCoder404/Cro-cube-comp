@@ -122,9 +122,11 @@ function AddSolveInputAndButton({
         }
 
         setInputValue("");
-        router.refresh();
+        router.replace(window.location.href, { scroll: false });
 
-        setTimeout(() => inputRef.current?.focus(), 0);
+        setTimeout(() => {
+            inputRef.current?.focus();
+        }, 0);
     };
 
     return (
