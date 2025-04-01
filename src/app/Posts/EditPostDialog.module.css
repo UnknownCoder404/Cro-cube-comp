@@ -49,7 +49,6 @@
         border-color 0.3s,
         box-shadow 0.3s;
     resize: vertical;
-    min-height: 150px;
     max-height: calc(90vh - 250px);
 }
 
