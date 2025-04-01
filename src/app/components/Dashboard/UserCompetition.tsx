@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import dashboardStyles from "@/app/Dashboard/Dashboard.module.css";
 import Event from "./Event";
