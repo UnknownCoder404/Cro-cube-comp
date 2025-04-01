@@ -45,11 +45,8 @@
     background-color: #505050;
     color: white;
     box-sizing: border-box;
-    transition:
-        border-color 0.3s,
-        box-shadow 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
     resize: vertical;
-    min-height: 150px;
     max-height: calc(90vh - 250px);
 }
 
@@ -76,9 +73,7 @@
     cursor: pointer;
     width: 100%;
     text-align: center;
-    transition:
-        background-color 0.3s,
-        box-shadow 0.3s,
+    transition: background-color 0.3s, box-shadow 0.3s,
         transform 0.2s var(--exponential);
     display: flex;
     justify-content: center;
