@@ -1,9 +1,15 @@
 .options {
+    gap: 20px 15px;
     padding: 20px;
     color: white;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    row-gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.options > * {
+    /* Each direct child of .options will have a base width of 300px and will grow/shrink as needed */
+    flex: 1 1 300px;
 }
 
 .change-password-title-container {
@@ -16,11 +22,6 @@
 .password-input-container {
     width: 100%;
     height: auto;
-}
-
-.change-password-form,
-.new-password {
-    width: 80%;
 }
 
 .username {
@@ -92,10 +93,4 @@
     border-color: var(--default-button-hover-background-color);
     box-shadow: 0 0 8px var(--default-button-shadow-color);
     outline: none;
-}
-
-@media screen and (width <= 420px) {
-    .options {
-        grid-template-columns: 1fr;
-    }
 }
