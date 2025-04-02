@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import getScramble from "./getScramble";
 import scrambleStyles from "./Scramble.module.css";
 import { Loader } from "../components/Loader/Loader";
 import dynamic from "next/dynamic";
@@ -36,7 +35,8 @@ function handleScrambleShare(scramble: string) {
     });
 }
 
-function generateNewScramble(setScramble: (scramble: string) => void) {
+async function generateNewScramble(setScramble: (scramble: string) => void) {
+    const { default: getScramble } = await import("./getScramble");
     setScramble(getScramble());
 }
 
@@ -44,7 +44,17 @@ export default function ScramblePage() {
     const [scramble, setScramble] = useState<string>("");
 
     useEffect(() => {
-        setScramble(getScramble());
+        // This fixes issue with SSR in package sr-scrambler
+        import("../Scramble/getScramble")
+            .then(({ default: getScramble }) => {
+                setScramble(getScramble());
+            })
+            .catch((error) => {
+                console.error("Failed to load scramble module:", error);
+                alert(
+                    "Došlo je do pogreške prilikom učitavanja scramble modula.",
+                );
+            });
     }, []);
 
     return (

@@ -6,7 +6,7 @@ export const dynamic = "error";
 export const metadata: Metadata = {
     title: "Vježbanje - Cro Cube Comp",
     description: "Vježbaj za natjecanje iz Rubikove kocke",
-    keywords: ["Miješanje Rubikove kocke"],
+    keywords: ["Vježbanje", "Scramble", "Rubikova kocka", "Miješanje"],
 };
 
 export default function Scramble() {
